@@ -1,0 +1,65 @@
+.header{
+  height:90px;
+  padding:0 24px;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+ 
+
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+
+/* LEFT */
+.left{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.logo{
+  width:36px;
+  height:36px;
+  border-radius:10px;
+
+  background:linear-gradient(135deg,#8a00ff,#b400ff);
+}
+
+.brand{
+  font-weight:600;
+  font-size:15px;
+}
+
+/* RIGHT */
+.right{
+    margin-right: 30px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.user{
+  padding:6px 44px;
+
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:999px;
+
+  
+  color: #b9a7d6;
+  cursor:pointer;
+}
+
+.logout{
+  padding:6px 34px;
+
+  background:transparent;
+  border:1px solid #8a00ff;
+  border-radius:999px;
+
+
+  color:  #8a00ff;
+  cursor:pointer;
+}
+

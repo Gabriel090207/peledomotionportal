@@ -1,0 +1,60 @@
+.section{
+  margin-top: 88px;
+}
+
+/* cabeçalho da categoria */
+.header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.title{
+  font-size: 22px;
+  margin-bottom: 40px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+/* setas */
+.arrows{
+  display: flex;
+  gap: 8px;
+}
+
+.arrows button{
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,.15);
+  background: rgba(20,10,40,.6);
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: background .2s, transform .2s;
+}
+
+.arrows button:hover{
+  background: rgba(140,0,255,.8);
+  transform: scale(1.1);
+}
+
+/* linha de cards */
+.row{
+  display: flex;
+  gap: 24px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding-bottom: 12px;
+}
+
+/* esconder scrollbar */
+.row::-webkit-scrollbar{
+  display: none;
+}
