@@ -1,6 +1,6 @@
 import chatgptLogo from "../assets/tools/chatgptlogo.png";
-import leonardoLogo from "../assets/tools/leonardo.png";
-import midjourneyLogo from "../assets/tools/midjourney.png";
+import leonardoLogo from "../assets/tools/leonardologo.png";
+import midjourneyLogo from "../assets/tools/midjourneylogo.png";
 
 
 

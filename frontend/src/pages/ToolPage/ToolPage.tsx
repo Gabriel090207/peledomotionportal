@@ -39,9 +39,11 @@ if (!tool) {
 
       <main className={styles.content}>
 
-        <button className={styles.back} onClick={() => navigate("/")}>
-           Voltar para ferramentas
-        </button>
+       <button className={styles.back} onClick={() => navigate("/")}>
+  <i className="fa-solid fa-arrow-left-long" />
+  <span>Voltar para ferramentas</span>
+</button>
+
 
         <div className={styles.toolCard}>
   <img src={tool.logo} alt={tool.name} />
