@@ -8,53 +8,30 @@ import leonardoImg from "../assets/tools/leonardo.png";
 import chatgptImg from "../assets/tools/chatgpt.png";
 import midjourneyImg from "../assets/tools/midjourney.png";
 
-const conteudoInteligente = [
+
+ const conteudoInteligente = [
   {
+    id: "chatgpt",
     name: "ChatGPT",
     description: "IA conversacional com sessões independentes.",
-    image: chatgptImg
+    image: chatgptImg,
   },
   {
+    id: "leonardo",
     name: "Leonardo AI",
     description: "Geração de imagens com perfis isolados.",
-    image: leonardoImg
+    image: leonardoImg,
   },
   {
+    id: "midjourney",
     name: "Midjourney",
     description: "Criação visual avançada sem cruzamento de dados.",
-    image: midjourneyImg
+    image: midjourneyImg,
   },
-  {
-    name: "ChatGPT",
-    description: "IA conversacional com sessões independentes.",
-    image: chatgptImg
-  },
-  {
-    name: "Leonardo AI",
-    description: "Geração de imagens com perfis isolados.",
-    image: leonardoImg
-  },
-  {
-    name: "Midjourney",
-    description: "Criação visual avançada sem cruzamento de dados.",
-    image: midjourneyImg
-  },
-  {
-    name: "ChatGPT",
-    description: "IA conversacional com sessões independentes.",
-    image: chatgptImg
-  },
-  {
-    name: "Leonardo AI",
-    description: "Geração de imagens com perfis isolados.",
-    image: leonardoImg
-  },
-  {
-    name: "Midjourney",
-    description: "Criação visual avançada sem cruzamento de dados.",
-    image: midjourneyImg
-  },
+  
 ];
+
+
 
 
 export default function DashboardPage() {

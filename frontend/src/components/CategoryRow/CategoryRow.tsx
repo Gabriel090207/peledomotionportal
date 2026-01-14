@@ -3,6 +3,7 @@ import ToolCard from "../ToolCard/ToolCard";
 import styles from "./CategoryRow.module.css";
 
 type Tool = {
+  id: string;
   name: string;
   description: string;
   image: string;
@@ -38,14 +39,18 @@ export default function CategoryRow({ title, tools }: Props) {
       </div>
 
       <div className={styles.row} ref={rowRef}>
-        {tools.map((tool, index) => (
-          <ToolCard
-            key={index}
-            name={tool.name}
-            description={tool.description}
-            image={tool.image}
-          />
-        ))}
+       {tools.map((tool) => (
+  <ToolCard
+    key={tool.id}
+    id={tool.id}
+    name={tool.name}
+    description={tool.description}
+    image={tool.image}
+  />
+))}
+
+
+  
       </div>
     </section>
   );

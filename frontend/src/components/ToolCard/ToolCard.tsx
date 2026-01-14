@@ -1,12 +1,17 @@
 import styles from "./ToolCard.module.css";
+import { useNavigate } from "react-router-dom";
+
 
 type Props = {
+  id: string; // 🔹 novo
   name: string;
   description: string;
   image: string;
 };
 
-export default function ToolCard({ name, description, image }: Props){
+export default function ToolCard({ id, name, description, image }: Props) {
+  const navigate = useNavigate();
+
   return (
     <div className={styles.card}>
       <div
@@ -17,7 +22,10 @@ export default function ToolCard({ name, description, image }: Props){
       <div className={styles.body}>
         <h3>{name}</h3>
         <p>{description}</p>
-        <button>Acessar</button>
+
+        <button onClick={() => navigate(`/tool/${id}`)}>
+          Acessar
+        </button>
       </div>
     </div>
   );

@@ -19,16 +19,19 @@
 }
 
 .logo{
-  width:36px;
-  height:36px;
+  width:66px;
+  height:46px;
   border-radius:10px;
 
-  background:linear-gradient(135deg,#8a00ff,#b400ff);
+  
 }
 
 .brand{
-  font-weight:600;
-  font-size:15px;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  font-weight:700;
+  margin-top: -5px;
+  font-size: 19px;
+  margin-left: -10px;
 }
 
 /* RIGHT */
@@ -45,11 +48,32 @@
   background:rgba(255,255,255,.06);
   border:1px solid rgba(255,255,255,.08);
   border-radius:999px;
-
+  
+ font-family: 'Inter', system-ui, sans-serif;
+ font-weight: 600;
   
   color: #b9a7d6;
   cursor:pointer;
 }
+
+.user {
+  transition:
+    background 0.25s ease,
+    border 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.2s ease;
+}
+
+.user:hover {
+  background: rgba(255,255,255,0.10);
+  border-color: rgba(180,0,255,0.35);
+
+  box-shadow:
+    0 0 14px rgba(180,0,255,0.25);
+
+  transform: translateY(-1px);
+}
+
 
 .logout{
   padding:6px 34px;
@@ -58,8 +82,29 @@
   border:1px solid #8a00ff;
   border-radius:999px;
 
-
+ font-family: 'Inter', system-ui, sans-serif;
+ font-weight: 600;
   color:  #8a00ff;
   cursor:pointer;
 }
 
+
+.logout {
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.2s ease;
+}
+
+.logout:hover {
+  background: rgba(138,0,255,0.12);
+  color: #b9a7d6;
+;
+
+  box-shadow:
+    0 0 18px rgba(138,0,255,0.55),
+    inset 0 0 0 1px rgba(138,0,255,0.35);
+
+  transform: translateY(-1px);
+}

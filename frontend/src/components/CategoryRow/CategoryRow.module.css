@@ -49,9 +49,14 @@
 .row{
   display: flex;
   gap: 24px;
+
   overflow-x: auto;
+  overflow-y: visible; /* 🔴 ESSENCIAL */
+
   scroll-behavior: smooth;
-  padding-bottom: 12px;
+
+  padding-top: 12px;    /* espaço pro hover subir */
+  padding-bottom: 20px;
 }
 
 /* esconder scrollbar */
