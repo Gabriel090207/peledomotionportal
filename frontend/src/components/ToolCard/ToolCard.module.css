@@ -69,6 +69,7 @@
 
 /* botão */
 .body button{
+  font-family: 'Inter', system-ui, sans-serif;
   margin-top:auto;
 
   padding:10px 14px;

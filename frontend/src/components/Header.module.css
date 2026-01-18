@@ -101,3 +101,34 @@
     inset 0 0 0 1px rgba(138,0,255,0.35);
   transform: translateY(-1px);
 }
+
+
+.settings {
+ margin-left: 20px;
+  width: 36px;
+  height: 36px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+  cursor: pointer;
+
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.08);
+  color: #b9a7d6;
+
+  transition:
+    background 0.25s ease,
+    border 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.2s ease;
+}
+
+.settings:hover {
+  background: rgba(255,255,255,0.10);
+  border-color: rgba(180,0,255,0.35);
+  box-shadow: 0 0 14px rgba(180,0,255,0.25);
+  transform: translateY(-1px);
+}
