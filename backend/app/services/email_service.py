@@ -7,8 +7,9 @@ def enviar_email_credenciais(destinatario: str, senha: str):
     import ssl
     from email.message import EmailMessage
 
+    # 🔐 Configurações SMTP (SSL direto)
     SMTP_HOST = os.getenv("SMTP_HOST", "smtp.gmail.com")
-    SMTP_PORT = int(os.getenv("SMTP_PORT", "587"))
+    SMTP_PORT = int(os.getenv("SMTP_PORT", "465"))
     EMAIL_USER = os.getenv("EMAIL_USER")
     EMAIL_PASS = os.getenv("EMAIL_PASS")
     SENDER_NAME = os.getenv("SENDER_NAME", "Pelé do Motion")
@@ -39,8 +40,8 @@ def enviar_email_credenciais(destinatario: str, senha: str):
     msg["To"] = destinatario
     msg.add_alternative(corpo_html, subtype="html")
 
+    # ✅ SMTP SSL (porta 465)
     context = ssl.create_default_context()
-    with smtplib.SMTP(SMTP_HOST, SMTP_PORT, timeout=30) as server:
-        server.starttls(context=context)
+    with smtplib.SMTP_SSL(SMTP_HOST, SMTP_PORT, context=context, timeout=30) as server:
         server.login(EMAIL_USER, EMAIL_PASS)
         server.send_message(msg)
