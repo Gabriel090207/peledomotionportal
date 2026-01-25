@@ -1,25 +1,23 @@
-from fastapi import APIRouter
-from pydantic import BaseModel
-from app.services.email_service import send_welcome_email
-from app.templates.welcome_email import welcome_email_template
+from fastapi import APIRouter, HTTPException
+from pydantic import BaseModel, EmailStr
 
-router = APIRouter()
+from app.services.email_service import enviar_email_credenciais
 
-class TestEmailPayload(BaseModel):
-    email: str
-    password: str
+router = APIRouter(prefix="/test-email", tags=["Test Email"])
 
-@router.post("/test-email")
-def test_email(payload: TestEmailPayload):
-    html = welcome_email_template(payload.email, payload.password)
 
-    send_welcome_email(
-        to_email=payload.email,
-        password=payload.password,
-        html=html
-    )
+class TestEmailRequest(BaseModel):
+    email: EmailStr
+    senha: str = "SenhaTeste123"
 
-    return {
-        "ok": True,
-        "email": payload.email
-    }
+
+@router.post("/")
+def testar_email(data: TestEmailRequest):
+    try:
+        enviar_email_credenciais(
+            destinatario=data.email,
+            senha=data.senha
+        )
+        return {"ok": True, "msg": f"E-mail enviado para {data.email}"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))

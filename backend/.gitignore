@@ -2,3 +2,4 @@ venv/
 .env
 __pycache__/
 backend/app/core/serviceAccountKey.json
+firebasekey.json
