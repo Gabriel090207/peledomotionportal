@@ -1,22 +1,16 @@
 import os
+import requests
 from datetime import datetime
 
 
 def enviar_email_credenciais(destinatario: str, senha: str):
-    import smtplib
-    import ssl
-    from email.message import EmailMessage
+    api_key = os.getenv("RESEND_API_KEY")
+    email_from = os.getenv("EMAIL_FROM", "Pelé do Motion <onboarding@resend.dev>")
 
-    # 🔐 Configurações SMTP (SSL direto)
-    SMTP_HOST = os.getenv("SMTP_HOST", "smtp.gmail.com")
-    SMTP_PORT = int(os.getenv("SMTP_PORT", "465"))
-    EMAIL_USER = os.getenv("EMAIL_USER")
-    EMAIL_PASS = os.getenv("EMAIL_PASS")
-    SENDER_NAME = os.getenv("SENDER_NAME", "Pelé do Motion")
+    if not api_key:
+        raise RuntimeError("RESEND_API_KEY não configurada")
 
-    assunto = "🚀 Seu acesso ao Pelé do Motion foi liberado"
-
-    corpo_html = f"""
+    html = f"""
     <div style="background:#07040d;padding:40px;font-family:Arial;color:#f6f2ff">
       <div style="max-width:600px;margin:auto;background:#0f0a1f;border-radius:18px;padding:30px">
         <h2 style="color:#b400ff">Bem-vindo ao Pelé do Motion</h2>
@@ -34,14 +28,20 @@ def enviar_email_credenciais(destinatario: str, senha: str):
     </div>
     """
 
-    msg = EmailMessage()
-    msg["Subject"] = assunto
-    msg["From"] = f"{SENDER_NAME} <{EMAIL_USER}>"
-    msg["To"] = destinatario
-    msg.add_alternative(corpo_html, subtype="html")
+    response = requests.post(
+        "https://api.resend.com/emails",
+        headers={
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json",
+        },
+        json={
+            "from": email_from,
+            "to": [destinatario],
+            "subject": "🚀 Seu acesso ao Pelé do Motion foi liberado",
+            "html": html,
+        },
+        timeout=15,
+    )
 
-    # ✅ SMTP SSL (porta 465)
-    context = ssl.create_default_context()
-    with smtplib.SMTP_SSL(SMTP_HOST, SMTP_PORT, context=context, timeout=30) as server:
-        server.login(EMAIL_USER, EMAIL_PASS)
-        server.send_message(msg)
+    if response.status_code >= 400:
+        raise RuntimeError(f"Erro ao enviar email: {response.text}")
