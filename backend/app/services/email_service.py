@@ -1,37 +1,29 @@
 import os
-import smtplib
-import socket
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
+import resend
 
-SMTP_HOST = os.getenv("SMTP_HOST")
-SMTP_PORT = int(os.getenv("SMTP_PORT", "587"))
-EMAIL_USER = os.getenv("EMAIL_USER")
-EMAIL_PASS = os.getenv("EMAIL_PASS")
-SENDER_NAME = os.getenv("SENDER_NAME", "Pelé do Motion")
+# Configura API Key
+resend.api_key = os.getenv("RESEND_API_KEY")
+
+EMAIL_FROM = os.getenv(
+    "EMAIL_FROM",
+    "Pelé do Motion <onboarding@resend.dev>"
+)
 
 def send_welcome_email(to_email: str, password: str, html: str):
+    """
+    Envia email de boas-vindas via Resend.
+    Mantém a mesma assinatura usada antes (drop-in replacement).
+    """
     try:
-        msg = MIMEMultipart("alternative")
-        msg["From"] = f"{SENDER_NAME} <{EMAIL_USER}>"
-        msg["To"] = to_email
-        msg["Subject"] = "🎉 Seu acesso ao Pelé do Motion"
+        response = resend.Emails.send({
+            "from": EMAIL_FROM,
+            "to": to_email,
+            "subject": "🎉 Seu acesso ao Pelé do Motion",
+            "html": html,
+        })
 
-        msg.attach(MIMEText(html, "html"))
-
-        # timeout curto pra não travar a API
-        socket.setdefaulttimeout(10)
-
-        server = smtplib.SMTP(SMTP_HOST, SMTP_PORT)
-        server.ehlo()
-        server.starttls()
-        server.ehlo()
-        server.login(EMAIL_USER, EMAIL_PASS)
-        server.sendmail(EMAIL_USER, to_email, msg.as_string())
-        server.quit()
-
-        print("[EMAIL] Gmail SMTP enviado com sucesso")
+        print("[EMAIL] Resend enviado com sucesso:", response)
 
     except Exception as e:
+        # IMPORTANTE: não quebrar a API
         print("[EMAIL ERROR]", str(e))
-        # não quebra a API

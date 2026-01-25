@@ -1,20 +1,29 @@
 from fastapi import APIRouter
+from pydantic import BaseModel
+
 from app.services.email_service import send_welcome_email
-from app.templates.welcome_email import welcome_email_template
-from app.utils.password_generator import generate_random_password
-import os
+from app.templates.welcome_email import render_welcome_email
 
 router = APIRouter()
 
-@router.get("/test-welcome")
-def test_welcome():
-    email = os.getenv("EMAIL_USER")
-    password = generate_random_password()
+class TestWelcomeBody(BaseModel):
+    email: str
+    password: str
 
-    html = welcome_email_template(email, password)
-    send_welcome_email(email, password, html)
+@router.post("/test-welcome")
+def test_welcome(data: TestWelcomeBody):
+    html = render_welcome_email(
+        email=data.email,
+        password=data.password
+    )
+
+    send_welcome_email(
+        to_email=data.email,
+        password=data.password,
+        html=html
+    )
 
     return {
-        "email": email,
-        "password": password
+        "ok": True,
+        "email": data.email
     }
