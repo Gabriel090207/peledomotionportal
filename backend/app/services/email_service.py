@@ -60,9 +60,23 @@ def enviar_email_credenciais(destinatario: str, senha: str):
                   <p style="margin:0 0 6px;color:#b9a7d6;font-size:13px;">
                     Email de acesso
                   </p>
-                  <p style="margin:0 0 14px;color:#ffffff;font-size:15px;font-weight:600;">
-                    {destinatario}
-                  </p>
+                 <p style="margin:0 0 14px;font-size:15px;font-weight:600;">
+  <a
+    href="mailto:{destinatario}"
+    style="
+      color:#ffffff !important;
+      text-decoration:none !important;
+      cursor:default;
+      pointer-events:none;
+      font-weight:600;
+      font-size:15px;
+      display:inline-block;
+    "
+  >
+    {destinatario}
+  </a>
+</p>
+
 
                   <p style="margin:0 0 6px;color:#b9a7d6;font-size:13px;">
                     Senha temporária
