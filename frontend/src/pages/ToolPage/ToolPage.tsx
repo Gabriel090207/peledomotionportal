@@ -38,24 +38,29 @@ export default function ToolPage() {
   useEffect(() => {
     async function fetchProfiles() {
       if (!toolId) return;
-
+  
       setLoading(true);
-
+  
       const q = query(
         collection(db, "perfis"),
         where("tool", "==", toolId),
         where("ativo", "==", true)
       );
-
+  
       const snapshot = await getDocs(q);
-      const data = snapshot.docs.map((doc) => doc.data() as Perfil);
-
+  
+      const data = snapshot.docs.map((doc) => ({
+        profile_id: Number(doc.id),
+        ...(doc.data() as Omit<Perfil, "profile_id">),
+      }));
+  
       setProfiles(data);
       setLoading(false);
     }
-
+  
     fetchProfiles();
   }, [toolId]);
+  
 
   // ❌ Tool não existe
   if (!tool) {
