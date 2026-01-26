@@ -24,16 +24,8 @@ async function handleOpenProfile() {
       `https://peledomotionportal-backend.onrender.com/ixbrowser/profiles/${profileId}/open`,
       {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          profile_id: profileId,
-        }),
       }
     );
-    
-
 
     if (!response.ok) {
       throw new Error("Erro ao abrir perfil");

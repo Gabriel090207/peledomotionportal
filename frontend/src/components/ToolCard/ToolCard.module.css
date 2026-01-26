@@ -1,6 +1,7 @@
 .card{
 
-  flex-shrink: 0;
+  flex: 0 0 auto;   /* 🔥 TRAVA DEFINITIVAMENTE NO CARROSSEL */
+
   width: 300px;          /* largura fixa */
   height: 460px;         /* altura fixa */
 

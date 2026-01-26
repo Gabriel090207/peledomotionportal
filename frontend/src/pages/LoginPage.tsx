@@ -2,88 +2,149 @@ import { useState } from "react";
 import styles from "./LoginPage.module.css";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../services/firebase";
- // Importe a configuração do Firebase
-import { signInWithEmailAndPassword } from "firebase/auth"; // Importe a função de login
+import {
+  signInWithEmailAndPassword,
+  sendPasswordResetEmail,
+} from "firebase/auth";
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");  // Estado para o email
-  const [password, setPassword] = useState("");  // Estado para a senha
-  const [error, setError] = useState("");  // Estado para capturar erros de login
 
-  // Função para login
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const [error, setError] = useState("");
+  const [toastMessage, setToastMessage] = useState("");
+
+  const [showResetModal, setShowResetModal] = useState(false);
+  const [resetEmail, setResetEmail] = useState("");
+
+  // LOGIN
   const handleLogin = () => {
+    setError("");
+
     signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Usuário logado com sucesso
-        const user = userCredential.user;
-        console.log("Usuário logado:", user);
-        navigate("/dashboard"); // Redireciona para o dashboard ou outra página
+      .then(() => {
+        navigate("/dashboard");
       })
-      .catch((error) => {
-        console.error("Erro no login:", error.code);
-      
-        if (error.code === "auth/invalid-credential") {
-          setError("Email ou senha incorretos");
-        } else if (error.code === "auth/user-not-found") {
-          setError("Usuário não encontrado");
-        } else if (error.code === "auth/wrong-password") {
-          setError("Senha incorreta");
-        } else {
-          setError("Erro ao entrar. Tente novamente.");
-        }
+      .catch(() => {
+        setError("Email ou senha incorretos");
       });
-      
+  };
+
+  // RESET DE SENHA
+  const handlePasswordReset = () => {
+    if (!resetEmail) {
+      setError("Digite um email válido");
+      return;
+    }
+
+    sendPasswordResetEmail(auth, resetEmail)
+      .then(() => {
+        setToastMessage("Email de recuperação enviado com sucesso");
+        setError("");
+        setShowResetModal(false);
+        setResetEmail("");
+
+        setTimeout(() => {
+          setToastMessage("");
+        }, 3000);
+      })
+      .catch(() => {
+        setError("Erro ao enviar email de recuperação");
+      });
   };
 
   return (
-    <div className={styles.login}>
-      <div className={styles.container}>
-        {/* LADO ESQUERDO */}
-        <div className={styles.left}>
-          <div className={styles.brand}>
-            <div className={styles.logo} />
-            <h1 className={styles.headline}>Pelé do Motion</h1>
-            <p className={styles.subtitle}>
-              Potencialize sua performance digital centralizando ferramentas premium.
-            </p>
+    <>
+      {toastMessage && (
+        <div className={styles.toast}>{toastMessage}</div>
+      )}
+
+      <div className={styles.login}>
+        <div className={styles.container}>
+          {/* LADO ESQUERDO */}
+          <div className={styles.left}>
+            <div className={styles.brand}>
+              <div className={styles.logo} />
+              <h1 className={styles.headline}>Pelé do Motion</h1>
+              <p className={styles.subtitle}>
+                Potencialize sua performance digital centralizando ferramentas
+                premium.
+              </p>
+            </div>
+          </div>
+
+          {/* LADO DIREITO */}
+          <div className={styles.right}>
+            <div className={styles.card}>
+              <h2>Entrar no portal</h2>
+
+              <label>Email</label>
+              <input
+                type="email"
+                placeholder="seu@email.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+
+              <label>Senha</label>
+              <input
+                type="password"
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+
+              <button onClick={handleLogin}>Entrar</button>
+
+              <p
+                className={styles.forgot}
+                onClick={() => setShowResetModal(true)}
+              >
+                Esqueceu a senha?
+              </p>
+
+              {error && <p className={styles.error}>{error}</p>}
+            </div>
           </div>
         </div>
 
-        {/* LADO DIREITO */}
-        <div className={styles.right}>
-          <div className={styles.card}>
-            <h2>Entrar no portal</h2>
+        {/* MODAL RESET */}
+        {showResetModal && (
+          <div className={styles.modalOverlay}>
+            <div className={styles.modal}>
+              <h3>Recuperar senha</h3>
+              <p>
+                Informe seu email para receber o link de redefinição de senha.
+              </p>
 
-            {/* Input de email */}
-            <label>Email</label>
-            <input 
-              type="email" 
-              placeholder="seu@email.com"
-              value={email} 
-              onChange={(e) => setEmail(e.target.value)}  // Atualiza o estado do email
-            />
+              <input
+                type="email"
+                placeholder="seu@email.com"
+                value={resetEmail}
+                onChange={(e) => setResetEmail(e.target.value)}
+              />
 
-            {/* Input de senha */}
-            <label>Senha</label>
-            <input 
-              type="password" 
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}  // Atualiza o estado da senha
-            />
+              <div className={styles.modalActions}>
+                <button
+                  className={styles.cancel}
+                  onClick={() => setShowResetModal(false)}
+                >
+                  Cancelar
+                </button>
 
-            {/* Botão de login */}
-            <button onClick={handleLogin}>
-              Entrar
-            </button>
-
-            {/* Exibir erro se houver */}
-            {error && <p className={styles.error}>{error}</p>}
-
+                <button
+                  className={styles.send}
+                  onClick={handlePasswordReset}
+                >
+                  Enviar
+                </button>
+              </div>
+            </div>
           </div>
-        </div>
+        )}
       </div>
-    </div>
+    </>
   );
 }

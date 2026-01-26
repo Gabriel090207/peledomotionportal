@@ -51,12 +51,17 @@
   gap: 24px;
 
   overflow-x: auto;
-  overflow-y: visible; /* 🔴 ESSENCIAL */
+  overflow-y: visible;
 
   scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
 
-  padding-top: 12px;    /* espaço pro hover subir */
+  overscroll-behavior-x: contain; /* 🔥 TRAVA NAS PONTAS */
+  touch-action: pan-x;            /* 🔥 IMPEDE SCROLL EXTRA */
+
+  padding-top: 12px;
   padding-bottom: 20px;
+  padding-inline: 16px;           /* 🔥 EVITA ESPAÇO FANTASMA */
 }
 
 /* esconder scrollbar */
