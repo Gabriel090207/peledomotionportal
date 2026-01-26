@@ -132,3 +132,74 @@
   box-shadow: 0 0 14px rgba(180,0,255,0.25);
   transform: translateY(-1px);
 }
+
+
+
+/* =====================================
+   RESPONSIVIDADE – HEADER
+   ===================================== */
+
+/* =====================================
+   AJUSTE FINAL HEADER – MOBILE
+   ===================================== */
+
+   @media (max-width: 768px) {
+    .header {
+      height: 64px;
+      padding: 0 10px; /* mais colado à esquerda */
+    }
+  
+    /* Logo + nome mais próximos da borda */
+    .logo {
+      margin-left: -20px;
+      width: 46px;
+      height: 32px;
+    }
+  
+    .brand {
+      font-size: 12px;
+      margin-left: -4px;
+    }
+  
+    /* Lado direito */
+    .right {
+      margin-right: 0px;
+      gap: 6px;
+    }
+  
+
+    
+    /* MOSTRAR TEXTO nos botões */
+    .user,
+    .logout {
+     
+      height: 32px;
+      padding: 0 14px;
+      font-size: 12px;
+      border-radius: 999px;
+      line-height: 1;
+    }
+  
+    .settings {
+     display: none;
+    }
+  }
+  
+  /* MOBILE PEQUENO */
+  @media (max-width: 480px) {
+    .header {
+      height: 60px;
+      padding: 0 8px;
+    }
+  
+    .brand {
+      font-size: 14px;
+    }
+  
+    .user,
+    .logout {
+      padding: 0 12px;
+      font-size: 11px;
+    }
+  }
+  

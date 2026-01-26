@@ -1,4 +1,6 @@
 import Header from "../components/Header";
+import { useState } from "react";
+
 
 import styles from "./DashboardPage.module.css";
 import CategoryRow from "../components/CategoryRow/CategoryRow";
@@ -7,6 +9,9 @@ import CategoryRow from "../components/CategoryRow/CategoryRow";
 import leonardoImg from "../assets/tools/leonardo.png";
 import chatgptImg from "../assets/tools/chatgpt.png";
 import midjourneyImg from "../assets/tools/midjourney.png";
+
+import { FiSearch } from "react-icons/fi";
+
 
 
  const conteudoInteligente = [
@@ -35,6 +40,14 @@ import midjourneyImg from "../assets/tools/midjourney.png";
 
 
 export default function DashboardPage() {
+
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const filteredConteudoInteligente = conteudoInteligente.filter((tool) =>
+    tool.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    tool.description.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+  
   return (
     <div className={styles.page}>
       <Header />
@@ -64,11 +77,18 @@ export default function DashboardPage() {
              <button>Aúdio</button>
           </div>
 
-          <input
-            type="text"
-            placeholder="Buscar ferramenta..."
-            className={styles.search}
-          />
+          <div className={styles.searchWrapper}>
+  <FiSearch className={styles.searchIcon} />
+  <input
+  type="text"
+  placeholder="Buscar ferramenta..."
+  className={styles.search}
+  value={searchTerm}
+  onChange={(e) => setSearchTerm(e.target.value)}
+/>
+
+</div>
+
 
 
 
@@ -76,18 +96,25 @@ export default function DashboardPage() {
         </section>
 
 
-        <CategoryRow
-  title="Conteúdo Inteligente"
-  tools={conteudoInteligente}
-/>
+        {searchTerm ? (
+  <CategoryRow
+    tools={filteredConteudoInteligente}
+    hideHeader
+  />
+) : (
+  <>
+    <CategoryRow
+      title="Conteúdo Inteligente"
+      tools={conteudoInteligente}
+    />
 
-<CategoryRow
-  title="Edição e Designer"
-  tools={conteudoInteligente}
-/>
+    <CategoryRow
+      title="Edição e Designer"
+      tools={conteudoInteligente}
+    />
+  </>
+)}
 
-
-     
 
       </main>
     </div>

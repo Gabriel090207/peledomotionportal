@@ -156,3 +156,172 @@
   gap:14px;
 }
 
+/* =====================================
+   RESPONSIVIDADE – ROW / LISTA
+   ===================================== */
+
+/* TABLET */
+@media (max-width: 1024px) {
+  .row {
+    grid-template-columns: 2fr 1.8fr 1.2fr auto;
+    padding: 16px 18px;
+  }
+
+  .row span {
+    font-size: 13px;
+  }
+
+  .row button {
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .row {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .row span {
+    font-size: 13px;
+  }
+
+  /* status separado */
+  .active,
+  .inactive {
+    font-size: 11px;
+    padding: 5px 10px;
+  }
+
+  /* botão ocupa tudo */
+  .row button {
+    width: 100%;
+    margin-top: 6px;
+    padding: 12px;
+    font-size: 14px;
+    border-radius: 14px;
+  }
+}
+
+/* MOBILE PEQUENO */
+@media (max-width: 480px) {
+  .row {
+    padding: 14px;
+    gap: 10px;
+  }
+
+  .row span {
+    font-size: 12px;
+  }
+
+  .row button {
+    font-size: 13px;
+    padding: 11px;
+  }
+}
+
+
+/* =====================================
+   RESPONSIVIDADE GERAL – MOBILE
+   ===================================== */
+   @media (max-width: 768px) {
+
+    /* espaçamento geral da página */
+    .content {
+      padding: 20px 16px;
+    }
+  
+    /* botão voltar */
+    .back {
+      padding: 8px 14px;
+      font-size: 13px;
+      gap: 8px;
+    }
+  
+    .back i {
+      font-size: 13px;
+    }
+  
+    /* TOOL CARD */
+    .toolCard {
+      padding: 18px;
+      gap: 14px;
+      border-radius: 18px;
+    }
+  
+    .toolCard img {
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+    }
+  
+    .toolCard h1 {
+      font-size: 22px;
+      margin-top: 4px;
+      margin-left: 0;
+    }
+  
+    .toolCard p {
+      font-size: 13px;
+      margin-top: -6px;
+      margin-left: 0;
+    }
+  
+    /* TABS */
+    .tabs {
+      gap: 18px;
+      margin-top: 20px;
+      margin-bottom: 22px;
+      overflow-x: auto;
+    }
+  
+    .tab {
+      font-size: 13px;
+      padding: 10px 2px;
+      white-space: nowrap;
+    }
+  
+    /* LIST */
+    .list {
+      gap: 12px;
+    }
+  }
+  
+  /* =====================================
+     MOBILE PEQUENO (360px ~ 480px)
+     ===================================== */
+  @media (max-width: 480px) {
+  
+    .content {
+      padding: 16px 14px;
+    }
+  
+    .toolCard {
+      flex-direction: row;
+      align-items: center;
+      padding: 16px;
+    }
+  
+    .toolCard h1 {
+      font-size: 20px;
+    }
+  
+    .toolCard p {
+      font-size: 12px;
+    }
+  
+    .tabs {
+      gap: 14px;
+    }
+  
+    .tab {
+      font-size: 12px;
+    }
+  }
+  

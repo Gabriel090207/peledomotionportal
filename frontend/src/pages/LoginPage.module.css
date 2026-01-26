@@ -2,6 +2,7 @@
 
 .login {
   min-height: 100vh;
+  overflow: hidden; /* trava o scroll */
 }
 
 /* ===== LAYOUT GERAL ===== */
@@ -30,12 +31,12 @@
 /* LOGO */
 
 .logo{
-  width:56px;
-  height:56px;
-  border-radius:14px;
-
-  background: linear-gradient(135deg, #8a00ff, #b400ff);
-
+  width: 76px;
+  height: 76px;
+  border-radius: 50%; /* Deixando a logo redonda */
+  background-image: url('/logo-pm.png'); /* Caminho da logo */
+  background-size: cover; /* Ajusta a imagem para preencher o espaço */
+  background-position: center; /* Centraliza a imagem */
   box-shadow:
     0 0 0 1px rgba(255,255,255,.15),
     0 12px 40px rgba(180,0,255,.6);
@@ -178,4 +179,12 @@
     justify-content:center;
     padding:0;
   }
+}
+
+
+.error {
+  text-align: center;
+  margin-top: 32px;
+  color: #ff4d4f;
+  font-size: 14px;
 }

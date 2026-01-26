@@ -10,11 +10,14 @@ type Tool = {
 };
 
 type Props = {
-  title: string;
+  title?: string;
   tools: Tool[];
+  hideHeader?: boolean;
 };
 
-export default function CategoryRow({ title, tools }: Props) {
+
+export default function CategoryRow({ title, tools, hideHeader = false }: Props) {
+
   const rowRef = useRef<HTMLDivElement>(null);
 
   const scroll = (direction: "left" | "right") => {
@@ -29,14 +32,17 @@ export default function CategoryRow({ title, tools }: Props) {
 
   return (
     <section className={styles.section}>
-      <div className={styles.header}>
-        <h2 className={styles.title}>{title}</h2>
+     {!hideHeader && title && (
+  <div className={styles.header}>
+    <h2 className={styles.title}>{title}</h2>
 
-        <div className={styles.arrows}>
-          <button onClick={() => scroll("left")}>‹</button>
-          <button onClick={() => scroll("right")}>›</button>
-        </div>
-      </div>
+    <div className={styles.arrows}>
+      <button onClick={() => scroll("left")}>‹</button>
+      <button onClick={() => scroll("right")}>›</button>
+    </div>
+  </div>
+)}
+
 
       <div className={styles.row} ref={rowRef}>
        {tools.map((tool) => (
