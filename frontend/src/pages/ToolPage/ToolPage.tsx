@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 import Header from "../../components/Header";
@@ -8,6 +8,17 @@ import styles from "./ToolPage.module.css";
 import { tools } from "../../data/tools";
 import type { ToolKey } from "../../data/tools";
 
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { db } from "../../services/firebase";
+
+type Perfil = {
+  profile_id: number;
+  name: string;
+  group: string;
+  tool: string;
+  ativo: boolean;
+};
+
 export default function ToolPage() {
   const { toolId } = useParams();
   const navigate = useNavigate();
@@ -15,86 +26,38 @@ export default function ToolPage() {
   const [activeTab, setActiveTab] =
     useState<"profiles" | "groups">("profiles");
 
+  const [profiles, setProfiles] = useState<Perfil[]>([]);
+  const [loading, setLoading] = useState(true);
+
   const tool =
     toolId && toolId in tools
       ? tools[toolId as ToolKey]
       : null;
 
-  // 🔥 PERFIS FIXOS (TESTE)
-  const profiles = [
-    {
-      profile_id: 77,
-      name: "Gpt Busines 2",
-      group: "ChatGPT",
-      tool: "chatgpt", // 🔑 MUITO IMPORTANTE
-    },
-    {
-      profile_id: 76,
-      name: "Gpt Busines",
-      group: "ChatGPT",
-      tool: "chatgpt", // 🔑 MUITO IMPORTANTE
-    },
-    {
-      profile_id: 75,
-      name: "ChatGPT 08 + Sora",
-      group: "ChatGPT",
-      tool: "chatgpt", // 🔑 MUITO IMPORTANTE
-    },
-    {
-      profile_id: 74,
-      name: "ChatGPT 07 + Sora 2",
-      group: "ChatGPT",
-      tool: "chatgpt", // 🔑 MUITO IMPORTANTE
-    },
-    {
-      profile_id: 52,
-      name: "ChatGPT Pro",
-      group: "ChatGPT",
-      tool: "chatgpt", // 🔑 MUITO IMPORTANTE
-    },
-    {
-      profile_id: 51,
-      name: "ChatGPT 05",
-      group: "ChatGPT",
-      tool: "chatgpt", // 🔑 MUITO IMPORTANTE
-    },
-    {
-      profile_id: 44,
-      name: "GPT 04",
-      group: "ChatGPT",
-      tool: "chatgpt", // 🔑 MUITO IMPORTANTE
-    },
-    {
-      profile_id: 42,
-      name: "ChatGPT 03",
-      group: "ChatGPT",
-      tool: "chatgpt", // 🔑 MUITO IMPORTANTE
-    },
-    {
-      profile_id: 40,
-      name: "ChatGPT 02",
-      group: "ChatGPT",
-      tool: "chatgpt", // 🔑 MUITO IMPORTANTE
-    },
-    {
-      profile_id: 21,
-      name: "ChatGPT 01",
-      group: "ChatGPT",
-      tool: "chatgpt", // 🔑 MUITO IMPORTANTE
-    },
-    {
-      profile_id: 54,
-      name: "Leonardo AI 05",
-      group: "Leonardo AI",
-      tool: "leonardo", // 🔑 MUITO IMPORTANTE
-    },
-  ];
+  // 🔥 BUSCAR PERFIS PELO TOOL
+  useEffect(() => {
+    async function fetchProfiles() {
+      if (!toolId) return;
 
-  // 🔥 FILTRO PELO TOOL ID DA URL
-  const filteredProfiles = profiles.filter(
-    (profile) => profile.tool === toolId
-  );
+      setLoading(true);
 
+      const q = query(
+        collection(db, "perfis"),
+        where("tool", "==", toolId),
+        where("ativo", "==", true)
+      );
+
+      const snapshot = await getDocs(q);
+      const data = snapshot.docs.map((doc) => doc.data() as Perfil);
+
+      setProfiles(data);
+      setLoading(false);
+    }
+
+    fetchProfiles();
+  }, [toolId]);
+
+  // ❌ Tool não existe
   if (!tool) {
     return (
       <div className={styles.page}>
@@ -111,7 +74,7 @@ export default function ToolPage() {
       <Header />
 
       <main className={styles.content}>
-        <button className={styles.back} onClick={() => navigate("/")}>
+        <button className={styles.back} onClick={() => navigate("/dashboard")}>
           ← Voltar para ferramentas
         </button>
 
@@ -144,8 +107,13 @@ export default function ToolPage() {
         </div>
 
         <div className={styles.list}>
+          {activeTab === "profiles" && loading && (
+            <p>Carregando perfis...</p>
+          )}
+
           {activeTab === "profiles" &&
-            filteredProfiles.map((profile) => (
+            !loading &&
+            profiles.map((profile) => (
               <ProfileRow
                 key={profile.profile_id}
                 profileId={profile.profile_id}
@@ -155,9 +123,11 @@ export default function ToolPage() {
               />
             ))}
 
-          {activeTab === "profiles" && filteredProfiles.length === 0 && (
-            <p>Nenhum perfil encontrado.</p>
-          )}
+          {activeTab === "profiles" &&
+            !loading &&
+            profiles.length === 0 && (
+              <p>Nenhum perfil encontrado.</p>
+            )}
         </div>
       </main>
     </div>

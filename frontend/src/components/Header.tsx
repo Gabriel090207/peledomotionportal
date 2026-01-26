@@ -29,7 +29,7 @@ export default function Header() {
 
           <button
             className={styles.logout}
-            onClick={() => navigate("/login")}
+            onClick={() => navigate("/")}
           >
             Sair
           </button>

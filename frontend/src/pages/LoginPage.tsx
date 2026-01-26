@@ -18,7 +18,7 @@ export default function LoginPage() {
         // Usuário logado com sucesso
         const user = userCredential.user;
         console.log("Usuário logado:", user);
-        navigate("/"); // Redireciona para o dashboard ou outra página
+        navigate("/dashboard"); // Redireciona para o dashboard ou outra página
       })
       .catch((error) => {
         console.error("Erro no login:", error.code);
