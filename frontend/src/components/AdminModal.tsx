@@ -4,7 +4,6 @@ import styles from "./AdminModal.module.css";
 import {
   FiMoreVertical,
   FiTrash2,
-  FiEdit2,
   FiSearch
 } from "react-icons/fi";
 
