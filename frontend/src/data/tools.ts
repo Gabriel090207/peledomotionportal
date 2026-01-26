@@ -63,7 +63,7 @@ gemini: {
   description: "Gerencie e acesse seus perfis dessa ferramenta",
 },
 
-"motion-array": {
+"motionarray": {
   id: "motionarray",
   name: "Motion Array",
   logo: motionarrayLogo,

@@ -68,3 +68,10 @@
 .row::-webkit-scrollbar{
   display: none;
 }
+
+
+@media (max-width: 768px) {
+  .arrows button{
+    display: none;
+  }
+}
