@@ -96,14 +96,7 @@ export default function ToolPage() {
             Perfis
           </button>
 
-          <button
-            className={`${styles.tab} ${
-              activeTab === "groups" ? styles.active : ""
-            }`}
-            onClick={() => setActiveTab("groups")}
-          >
-            Grupos
-          </button>
+          
         </div>
 
         <div className={styles.list}>

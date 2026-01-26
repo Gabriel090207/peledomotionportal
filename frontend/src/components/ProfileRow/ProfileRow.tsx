@@ -21,7 +21,7 @@ async function handleOpenProfile() {
     setLoading(true);
 
     const response = await fetch(
-      `http://127.0.0.1:8000/ixbrowser/profiles/${profileId}/open`,
+      `https://peledomotionportal-backend.onrender.com/ixbrowser/profiles/${profileId}/open`,
       {
         method: "POST",
       }

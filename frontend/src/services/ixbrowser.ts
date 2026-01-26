@@ -1,4 +1,4 @@
-const API_BASE = "https://peledomotionportal.onrender.com";
+const API_BASE = "https://peledomotionportal-backend.onrender.com";
 
 export type Profile = {
   profile_id: number;
