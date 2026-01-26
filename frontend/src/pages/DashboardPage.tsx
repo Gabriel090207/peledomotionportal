@@ -136,18 +136,24 @@ export default function DashboardPage() {
 
 
   // 🔎 BUSCA
-  const filteredTools = tools.filter(
-    (tool) =>
-      tool.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      tool.description.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+ const filteredTools = tools.filter((tool) => {
+  const matchesSearch =
+    tool.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    tool.description.toLowerCase().includes(searchTerm.toLowerCase());
+
+  const matchesCategory =
+    activeFilter === "todas" || tool.category === activeFilter;
+
+  return matchesSearch && matchesCategory;
+});
+
 
   // 🔹 CATEGORIAS
-  const iaTools = tools.filter((t) => t.category === "ia");
-  const imagemTools = tools.filter((t) => t.category === "imagem");
-  const videoTools = tools.filter((t) => t.category === "video");
-  const edicaoTools = tools.filter((t) => t.category === "edicao");
-  const cursoTools = tools.filter((t) => t.category === "curso");
+ const iaTools = filteredTools.filter((t) => t.category === "ia");
+const imagemTools = filteredTools.filter((t) => t.category === "imagem");
+const videoTools = filteredTools.filter((t) => t.category === "video");
+const edicaoTools = filteredTools.filter((t) => t.category === "edicao");
+const cursoTools = filteredTools.filter((t) => t.category === "curso");
 
   return (
     <div className={styles.page}>
@@ -225,17 +231,18 @@ export default function DashboardPage() {
 
 
         {/* RESULTADOS */}
-        {searchTerm ? (
-          <CategoryRow tools={filteredTools} hideHeader />
-        ) : (
-          <>
-            <CategoryRow title="Inteligência Artificial" tools={iaTools} />
-            <CategoryRow title="Imagem" tools={imagemTools} />
-            <CategoryRow title="Vídeo" tools={videoTools} />
-            <CategoryRow title="Edição" tools={edicaoTools} />
-            <CategoryRow title="Cursos" tools={cursoTools} />
-          </>
-        )}
+        {activeFilter !== "todas" || searchTerm ? (
+  <CategoryRow tools={filteredTools} hideHeader />
+) : (
+  <>
+    <CategoryRow title="Inteligência Artificial" tools={iaTools} />
+    <CategoryRow title="Imagem" tools={imagemTools} />
+    <CategoryRow title="Vídeo" tools={videoTools} />
+    <CategoryRow title="Edição" tools={edicaoTools} />
+    <CategoryRow title="Cursos" tools={cursoTools} />
+  </>
+)}
+
       </main>
     </div>
   );
