@@ -1,20 +1,39 @@
 type Props = {
   onDownload: () => void;
+  onRetry: () => void;
 };
 
-export default function AgentRequiredOverlay({ onDownload }: Props) {
+export default function AgentRequiredOverlay({
+  onDownload,
+  onRetry,
+}: Props) {
+  function handleDownload() {
+    window.location.href = "/agent-mac.zip";
+    onDownload?.();
+  }
+
   return (
     <div style={styles.overlay}>
       <div style={styles.card}>
         <h2 style={styles.title}>Ativar acesso ao navegador</h2>
 
         <p style={styles.text}>
-          Para abrir perfis automaticamente, é necessário instalar o
-          agente local no seu computador.
+          Para abrir perfis automaticamente, é necessário instalar o agente
+          local no seu computador.
         </p>
 
-        <button style={styles.button} onClick={onDownload}>
+        <button
+          style={styles.primaryButton}
+          onClick={handleDownload}
+        >
           Baixar agente
+        </button>
+
+        <button
+          style={styles.secondaryButton}
+          onClick={onRetry}
+        >
+          Já instalei o agente
         </button>
       </div>
     </div>
@@ -54,7 +73,7 @@ const styles = {
     lineHeight: 1.5,
   },
 
-  button: {
+  primaryButton: {
     marginTop: "24px",
     padding: "14px 22px",
     borderRadius: "12px",
@@ -66,5 +85,17 @@ const styles = {
     background:
       "linear-gradient(90deg, var(--p-0), var(--p-1))",
     boxShadow: "0 6px 24px rgba(138,0,255,.5)",
+    width: "100%",
+  },
+
+  secondaryButton: {
+    marginTop: "12px",
+    padding: "12px",
+    borderRadius: "10px",
+    border: "1px solid var(--stroke)",
+    background: "transparent",
+    color: "var(--text)",
+    cursor: "pointer",
+    width: "100%",
   },
 };

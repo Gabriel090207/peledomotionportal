@@ -265,10 +265,15 @@ useEffect(() => {
       {agentMissing && (
   <AgentRequiredOverlay
     onDownload={() => {
-      alert("Download do agente em breve");
+      window.location.href = "/agent.app";
+    }}
+    onRetry={async () => {
+      const running = await checkAgentRunning();
+      setAgentMissing(!running);
     }}
   />
 )}
+
 
     </div>
   );
