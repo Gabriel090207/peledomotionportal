@@ -21,6 +21,11 @@ import stockmediaImg from "../assets/tools/adobestock.png";
 import paineisadobeImg from "../assets/tools/paineisadobe.png";
 import midartImg from "../assets/tools/midart.png"; // 🔹 CURSO
 
+
+import { useEffect } from "react";
+import { checkAgentRunning } from "../utils/checkAgent";
+import AgentRequiredOverlay from "../components/AgentRequiredOverlay";
+
 // 🔹 TODAS AS TOOLS
 const tools = [
   {
@@ -133,6 +138,7 @@ const tools = [
 export default function DashboardPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [activeFilter, setActiveFilter] = useState("todas");
+ const [agentMissing, setAgentMissing] = useState(false);
 
 
   // 🔎 BUSCA
@@ -154,6 +160,16 @@ const imagemTools = filteredTools.filter((t) => t.category === "imagem");
 const videoTools = filteredTools.filter((t) => t.category === "video");
 const edicaoTools = filteredTools.filter((t) => t.category === "edicao");
 const cursoTools = filteredTools.filter((t) => t.category === "curso");
+
+
+useEffect(() => {
+  async function check() {
+    const running = await checkAgentRunning();
+    setAgentMissing(!running);
+  }
+
+  check();
+}, []);
 
   return (
     <div className={styles.page}>
@@ -244,6 +260,16 @@ const cursoTools = filteredTools.filter((t) => t.category === "curso");
 )}
 
       </main>
+
+
+      {agentMissing && (
+  <AgentRequiredOverlay
+    onDownload={() => {
+      alert("Download do agente em breve");
+    }}
+  />
+)}
+
     </div>
   );
 }
