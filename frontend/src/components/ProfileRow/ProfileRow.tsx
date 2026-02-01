@@ -16,34 +16,42 @@ export default function ProfileRow({
 }: Props) {
   const [loading, setLoading] = useState(false);
 
+
   async function handleOpenProfile() {
-    console.log("PROFILE ID:", profileId);
+  console.log("PROFILE ID:", profileId);
 
-    try {
-      setLoading(true);
+  try {
+    setLoading(true);
 
-      const response = await fetch(
-        `http://127.0.0.1:8000/ixbrowser/profiles/${profileId}/open`,
-        {
-          method: "POST",
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Erro ao abrir perfil");
+    const response = await fetch(
+      "http://127.0.0.1:3001/open-profile",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          profile_id: profileId,
+        }),
       }
+    );
 
-      const data = await response.json();
-      console.log("Resposta backend:", data);
-
-      console.log("Perfil aberto com sucesso");
-    } catch (err) {
-      console.error(err);
-      alert("Erro ao abrir o perfil");
-    } finally {
-      setLoading(false);
+    if (!response.ok) {
+      throw new Error("Erro ao abrir perfil");
     }
+
+    const data = await response.json();
+    console.log("Resposta agente:", data);
+
+    console.log("Perfil aberto com sucesso");
+  } catch (err) {
+    console.error(err);
+    alert("Erro ao abrir o perfil");
+  } finally {
+    setLoading(false);
   }
+}
+
 
   return (
     <div className="rowcontent">

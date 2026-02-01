@@ -1,0 +1,3 @@
+([('agent',
+   '/Users/gabrielborela/Documents/peledomotionportal/portal-agent/dist/agent',
+   'EXECUTABLE')],)
