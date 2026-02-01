@@ -7,11 +7,6 @@ export default function AgentRequiredOverlay({
   onDownload,
   onRetry,
 }: Props) {
-  function handleDownload() {
-    window.location.href = "/agent-mac.zip";
-    onDownload?.();
-  }
-
   return (
     <div style={styles.overlay}>
       <div style={styles.card}>
@@ -24,7 +19,10 @@ export default function AgentRequiredOverlay({
 
         <button
           style={styles.primaryButton}
-          onClick={handleDownload}
+          onClick={() => {
+            window.open("/agent-mac.zip", "_blank");
+            onDownload?.();
+          }}
         >
           Baixar agente
         </button>
