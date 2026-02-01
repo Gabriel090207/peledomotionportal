@@ -23,28 +23,18 @@ export default function ProfileRow({
       setLoading(true);
 
       const response = await fetch(
-      "/ixapi/api/v2/profile-open",
-
+        `http://127.0.0.1:8000/ixbrowser/profiles/${profileId}/open`,
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            profile_id: profileId,
-            load_extensions: true,
-            load_profile_info_page: false,
-            cookies_backup: true,
-          }),
         }
       );
 
-      const data = await response.json();
-      console.log("Resposta IXBrowser:", data);
-
-      if (!response.ok || data.error) {
+      if (!response.ok) {
         throw new Error("Erro ao abrir perfil");
       }
+
+      const data = await response.json();
+      console.log("Resposta backend:", data);
 
       console.log("Perfil aberto com sucesso");
     } catch (err) {
