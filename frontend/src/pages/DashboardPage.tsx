@@ -1,8 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "../components/Header";
 import CategoryRow from "../components/CategoryRow/CategoryRow";
 import styles from "./DashboardPage.module.css";
 import { FiSearch } from "react-icons/fi";
+
+import { checkAgentRunning } from "../utils/checkAgent";
+import AgentRequiredOverlay from "../components/AgentRequiredOverlay";
+
+
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { db } from "../services/firebase";
 
 // IMAGENS
 import leonardoImg from "../assets/tools/leonardo.png";
@@ -19,14 +26,9 @@ import vectorizerImg from "../assets/tools/vectorizer.png";
 import googlelabsImg from "../assets/tools/googlelabs.png";
 import stockmediaImg from "../assets/tools/adobestock.png";
 import paineisadobeImg from "../assets/tools/paineisadobe.png";
-import midartImg from "../assets/tools/midart.png"; // 🔹 CURSO
+import midartImg from "../assets/tools/midart.png";
 
-
-import { useEffect } from "react";
-import { checkAgentRunning } from "../utils/checkAgent";
-import AgentRequiredOverlay from "../components/AgentRequiredOverlay";
-
-// 🔹 TODAS AS TOOLS
+// TODAS AS TOOLS
 const tools = [
   {
     id: "chatgpt",
@@ -87,49 +89,49 @@ const tools = [
   {
     id: "artlist",
     name: "Artlist",
-    description: "Biblioteca de músicas e efeitos sonoros com licenciamento global.",
+    description: "Biblioteca de músicas e efeitos sonoros.",
     image: artlistImg,
     category: "audio",
   },
   {
     id: "elevenlabs",
     name: "ElevenLabs",
-    description: "Geração de vozes realistas com controle total de identidade.",
+    description: "Geração de vozes realistas.",
     image: elevenlabsImg,
     category: "audio",
   },
   {
     id: "envato",
     name: "Envato",
-    description: "Acesso a assets premium para projetos criativos e comerciais.",
+    description: "Assets premium para projetos criativos.",
     image: envatoImg,
     category: "edicao",
   },
   {
     id: "studiosmonkey",
     name: "Studios Monkey",
-    description: "Gestão inteligente de estúdios e fluxos de produção.",
+    description: "Gestão inteligente de estúdios.",
     image: studiosmonkeyImg,
     category: "edicao",
   },
   {
     id: "stockmedia",
     name: "Stock Media",
-    description: "Banco de mídias premium para projetos criativos.",
+    description: "Banco de mídias premium.",
     image: stockmediaImg,
     category: "edicao",
   },
   {
     id: "paineisadobe",
     name: "Painéis Adobe",
-    description: "Gerenciamento centralizado de painéis e recursos Adobe.",
+    description: "Gerenciamento de painéis Adobe.",
     image: paineisadobeImg,
     category: "edicao",
   },
   {
     id: "midart",
     name: "MidArt",
-    description: "Curso completo de criação visual com IA.",
+    description: "Curso completo de criação visual.",
     image: midartImg,
     category: "curso",
   },
@@ -138,11 +140,18 @@ const tools = [
 export default function DashboardPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [activeFilter, setActiveFilter] = useState("todas");
- const [agentMissing, setAgentMissing] = useState(false);
+  const [agentMissing, setAgentMissing] = useState(false);
 
 
-  // 🔎 BUSCA
+  const [profileCounts, setProfileCounts] = useState<Record<string, number>>({});
+  const [loadingProfiles, setLoadingProfiles] = useState(true);
+
  const filteredTools = tools.filter((tool) => {
+  if (!loadingProfiles) {
+    const count = profileCounts[tool.id] || 0;
+    if (count === 0) return false;
+  }
+
   const matchesSearch =
     tool.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     tool.description.toLowerCase().includes(searchTerm.toLowerCase());
@@ -154,134 +163,137 @@ export default function DashboardPage() {
 });
 
 
-  // 🔹 CATEGORIAS
- const iaTools = filteredTools.filter((t) => t.category === "ia");
-const imagemTools = filteredTools.filter((t) => t.category === "imagem");
-const videoTools = filteredTools.filter((t) => t.category === "video");
-const edicaoTools = filteredTools.filter((t) => t.category === "edicao");
-const cursoTools = filteredTools.filter((t) => t.category === "curso");
+  const toolsByCategory = filteredTools.reduce((acc, tool) => {
+    if (!acc[tool.category]) {
+      acc[tool.category] = [];
+    }
+
+    acc[tool.category].push(tool);
+    return acc;
+  }, {});
+
+  useEffect(() => {
+    async function check() {
+      const running = await checkAgentRunning();
+      setAgentMissing(!running);
+    }
+
+    check();
+  }, []);
 
 
-useEffect(() => {
-  async function check() {
-    const running = await checkAgentRunning();
-    setAgentMissing(!running);
+  useEffect(() => {
+  async function loadProfileCounts() {
+    setLoadingProfiles(true);
+
+    const q = query(
+      collection(db, "perfis"),
+      where("ativo", "==", true)
+    );
+
+    const snapshot = await getDocs(q);
+
+    const counts: Record<string, number> = {};
+
+    snapshot.docs.forEach((doc) => {
+      const data = doc.data();
+      const tool = data.tool;
+
+      if (!counts[tool]) counts[tool] = 0;
+      counts[tool]++;
+    });
+
+    setProfileCounts(counts);
+    setLoadingProfiles(false);
   }
 
-  check();
+  loadProfileCounts();
 }, []);
+
 
   return (
     <div className={styles.page}>
       <Header />
 
       <main className={styles.content}>
-        {/* BANNER */}
         <section className={styles.banner}>
           <h1>
             Bem-vindo ao painel <span>mais completo</span> de IA do mercado.
           </h1>
           <p>
-            Centralize as ferramentas mais poderosas do mundo em um só lugar,
-            com acesso rápido, simples e inteligente.
+            Centralize as ferramentas mais poderosas do mundo em um só lugar.
           </p>
         </section>
 
-        {/* FILTROS */}
         <section className={styles.filters}>
-  <div className={styles.filterGroup}>
-    <button
-      className={activeFilter === "todas" ? styles.active : ""}
-      onClick={() => setActiveFilter("todas")}
-    >
-      Todas
-    </button>
+          <div className={styles.filterGroup}>
+            {["todas", "ia", "imagem", "video", "audio", "edicao", "curso"].map(
+              (cat) => (
+                <button
+                  key={cat}
+                  className={activeFilter === cat ? styles.active : ""}
+                  onClick={() => setActiveFilter(cat)}
+                >
+                  {cat.toUpperCase()}
+                </button>
+              )
+            )}
+          </div>
 
-    <button
-      className={activeFilter === "ia" ? styles.active : ""}
-      onClick={() => setActiveFilter("ia")}
-    >
-      IA
-    </button>
+          <div className={styles.searchWrapper}>
+            <FiSearch className={styles.searchIcon} />
+            <input
+              type="text"
+              placeholder="Buscar ferramenta..."
+              className={styles.search}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+        </section>
 
-    <button
-      className={activeFilter === "imagem" ? styles.active : ""}
-      onClick={() => setActiveFilter("imagem")}
-    >
-      Imagem
-    </button>
-
-    <button
-      className={activeFilter === "video" ? styles.active : ""}
-      onClick={() => setActiveFilter("video")}
-    >
-      Vídeo
-    </button>
-
-    <button
-      className={activeFilter === "edicao" ? styles.active : ""}
-      onClick={() => setActiveFilter("edicao")}
-    >
-      Edição
-    </button>
-
-    <button
-      className={activeFilter === "curso" ? styles.active : ""}
-      onClick={() => setActiveFilter("curso")}
-    >
-      Cursos
-    </button>
-  </div>
-
-  <div className={styles.searchWrapper}>
-    <FiSearch className={styles.searchIcon} />
-    <input
-      type="text"
-      placeholder="Buscar ferramenta..."
-      className={styles.search}
-      value={searchTerm}
-      onChange={(e) => setSearchTerm(e.target.value)}
-    />
-  </div>
-</section>
-
-
-        {/* RESULTADOS */}
         {activeFilter !== "todas" || searchTerm ? (
-  <CategoryRow tools={filteredTools} hideHeader />
-) : (
-  <>
-    <CategoryRow title="Inteligência Artificial" tools={iaTools} />
-    <CategoryRow title="Imagem" tools={imagemTools} />
-    <CategoryRow title="Vídeo" tools={videoTools} />
-    <CategoryRow title="Edição" tools={edicaoTools} />
-    <CategoryRow title="Cursos" tools={cursoTools} />
-  </>
-)}
-
+          <CategoryRow tools={filteredTools} hideHeader />
+        ) : (
+          <>
+            {toolsByCategory.ia && (
+              <CategoryRow
+                title="Inteligência Artificial"
+                tools={toolsByCategory.ia}
+              />
+            )}
+            {toolsByCategory.imagem && (
+              <CategoryRow title="Imagem" tools={toolsByCategory.imagem} />
+            )}
+            {toolsByCategory.video && (
+              <CategoryRow title="Vídeo" tools={toolsByCategory.video} />
+            )}
+            {toolsByCategory.audio && (
+              <CategoryRow title="Áudio" tools={toolsByCategory.audio} />
+            )}
+            {toolsByCategory.edicao && (
+              <CategoryRow title="Edição" tools={toolsByCategory.edicao} />
+            )}
+            {toolsByCategory.curso && (
+              <CategoryRow title="Cursos" tools={toolsByCategory.curso} />
+            )}
+          </>
+        )}
       </main>
 
-
       {agentMissing && (
-  <AgentRequiredOverlay
-  onDownload={() => {
-    setAgentMissing(false);
-  }}
-  onRetry={async () => {
-    const running = await checkAgentRunning();
-
-    if (!running) {
-      alert("O agente ainda não foi instalado.");
-      return;
-    }
-
-    setAgentMissing(false);
-  }}
-/>
-
-)}
-
-
+        <AgentRequiredOverlay
+          onDownload={() => setAgentMissing(false)}
+          onRetry={async () => {
+            const running = await checkAgentRunning();
+            if (!running) {
+              alert("O agente ainda não foi instalado.");
+              return;
+            }
+            setAgentMissing(false);
+          }}
+        />
+      )}
     </div>
   );
 }
