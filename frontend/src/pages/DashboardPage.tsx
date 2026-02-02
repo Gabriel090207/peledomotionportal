@@ -264,14 +264,21 @@ useEffect(() => {
 
       {agentMissing && (
   <AgentRequiredOverlay
-    onDownload={() => {
-      window.location.href = "/agent.app";
-    }}
-    onRetry={async () => {
-      const running = await checkAgentRunning();
-      setAgentMissing(!running);
-    }}
-  />
+  onDownload={() => {
+    setAgentMissing(false);
+  }}
+  onRetry={async () => {
+    const running = await checkAgentRunning();
+
+    if (!running) {
+      alert("O agente ainda não foi instalado.");
+      return;
+    }
+
+    setAgentMissing(false);
+  }}
+/>
+
 )}
 
 
