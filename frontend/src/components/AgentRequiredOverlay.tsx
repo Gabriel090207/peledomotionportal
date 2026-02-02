@@ -7,6 +7,22 @@ export default function AgentRequiredOverlay({
   onDownload,
   onRetry,
 }: Props) {
+
+ function handleDownload() {
+  const platform = navigator.platform.toLowerCase();
+
+  let file =
+    "https://peledomotionportal-backend.onrender.com/downloads/agent-mac.zip";
+
+  if (platform.includes("win")) {
+    file =
+      "https://peledomotionportal-backend.onrender.com/downloads/portal-agent-installer.exe";
+  }
+
+  window.open(file, "_blank");
+  onDownload?.();
+}
+
   return (
     <div style={styles.overlay}>
       <div style={styles.card}>
@@ -19,10 +35,7 @@ export default function AgentRequiredOverlay({
 
         <button
           style={styles.primaryButton}
-          onClick={() => {
-            window.open("/agent-mac.zip", "_blank");
-            onDownload?.();
-          }}
+          onClick={handleDownload}
         >
           Baixar agente
         </button>

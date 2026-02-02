@@ -5,7 +5,6 @@ import uvicorn
 
 app = FastAPI()
 
-# permitir chamadas do portal
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -15,11 +14,9 @@ app.add_middleware(
 
 IXBROWSER_API = "http://127.0.0.1:53200/api/v2/profile-open"
 
-
 @app.get("/health")
 def health():
     return {"status": "running"}
-
 
 @app.post("/open-profile")
 def open_profile(data: dict):
@@ -37,6 +34,5 @@ def open_profile(data: dict):
 
     return resp.json()
 
-
 if __name__ == "__main__":
-    uvicorn.run(app, host="127.0.0.1", port=3001)
+    uvicorn.run(app, host="127.0.0.1", port=3001, log_config=None)
