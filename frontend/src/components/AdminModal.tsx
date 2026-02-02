@@ -458,6 +458,13 @@ useEffect(() => {
 
  <main className={styles.main}>
 
+ {uploadingImage && (
+  <div style={{ marginBottom: 10 }}>
+    Enviando imagem...
+  </div>
+)}
+
+
   {activePage === "usuarios" && (
     <>
       <h2>Usuários</h2>
