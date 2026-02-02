@@ -6,6 +6,7 @@ import {
   FiTrash2,
   FiSearch
 } from "react-icons/fi";
+import { FiUploadCloud } from "react-icons/fi";
 
 
 import { collection, getDocs } from "firebase/firestore";
@@ -13,6 +14,8 @@ import { db } from "../services/firebase"; // ajuste o path
 import { Timestamp } from "firebase/firestore";
 import { doc, updateDoc, deleteDoc } from "firebase/firestore";
 import { setDoc, serverTimestamp } from "firebase/firestore";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { storage } from "../services/firebase";
 
 
 
@@ -62,6 +65,14 @@ const [profileName, setProfileName] = useState(""); // nome do perfil
 const [group, setGroup] = useState("");
 const [tool, setTool] = useState(""); // chave da ferramenta
 const [saving, setSaving] = useState(false);
+const [uploadingImage, setUploadingImage] = useState(false);
+const [uploadedImageUrl, setUploadedImageUrl] = useState("");
+const [uploadedToolImageUrl, setUploadedToolImageUrl] = useState("");
+
+const [cardTitle, setCardTitle] = useState("");
+const [cardDescription, setCardDescription] = useState("");
+const [cardCategory, setCardCategory] = useState("");
+const [cardTool, setCardTool] = useState("");
 
 
 
@@ -76,6 +87,10 @@ const [perfis, setPerfis] = useState<Perfil[]>([]);
 const [openConfirmProfile, setOpenConfirmProfile] = useState<string | null>(null);
 
 const [searchPerfis, setSearchPerfis] = useState("");
+
+
+const [cards, setCards] = useState<any[]>([]);
+const [editingCard, setEditingCard] = useState<any | null>(null);
 
 const perfisFiltrados = perfis.filter((perfil) => {
   const termo = searchPerfis.toLowerCase().trim();
@@ -233,12 +248,151 @@ async function handleDeleteProfile(profile: Perfil) {
 }
 
 
+
+
+
+  async function handleUploadImage(file: File) {
+  try {
+    setUploadingImage(true);
+
+    const imageRef = ref(storage, `tools/${Date.now()}_${file.name}`);
+
+    await uploadBytes(imageRef, file);
+
+    const url = await getDownloadURL(imageRef);
+
+    setUploadedImageUrl(url);
+
+    return url; // ✅ IMPORTANTE
+  } catch (err) {
+    console.error(err);
+    alert("Erro ao enviar imagem");
+    return null;
+  } finally {
+    setUploadingImage(false);
+  }
+}
+
+
+
+async function handleSaveCard(e: React.FormEvent) {
+  e.preventDefault();
+
+ if (
+  !uploadedImageUrl ||
+  !uploadedToolImageUrl ||
+  !cardTitle ||
+  !cardTool
+) {
+  alert("Envie as duas imagens e preencha os campos");
+  return;
+}
+
+
+  try {
+    await setDoc(doc(db, "tools", cardTool), {
+      name: cardTitle,
+      description: cardDescription,
+      category: cardCategory,
+
+      imageUrl: uploadedImageUrl,          // card
+      toolImageUrl: uploadedToolImageUrl,  // tela interna
+
+      active: true,
+      createdAt: serverTimestamp(),
+    });
+
+    alert("Card criado!");
+
+    setCardTitle("");
+    setCardDescription("");
+    setCardCategory("");
+    setCardTool("");
+    setUploadedImageUrl("");
+    setUploadedToolImageUrl("");
+  } catch (err) {
+    console.error(err);
+    alert("Erro ao salvar");
+  }
+}
+
+
+
+async function handleUploadToolImage(file: File) {
+  try {
+    setUploadingImage(true);
+
+    const imageRef = ref(storage, `tools/${Date.now()}_${file.name}`);
+
+    await uploadBytes(imageRef, file);
+
+    const url = await getDownloadURL(imageRef);
+
+    setUploadedToolImageUrl(url);
+
+    return url; // ✅ agora retorna
+  } catch (err) {
+    console.error(err);
+    alert("Erro ao enviar imagem");
+    return null;
+  } finally {
+    setUploadingImage(false);
+  }
+}
+
+
+async function handleUpdateCard() {
+  if (!editingCard) return;
+
+  const updateData: any = {
+    name: editingCard.name,
+    description: editingCard.description,
+    category: editingCard.category,
+  };
+
+  // só envia se existir
+  if (editingCard.imageUrl) {
+    updateData.imageUrl = editingCard.imageUrl;
+  }
+
+  if (editingCard.toolImageUrl) {
+    updateData.toolImageUrl = editingCard.toolImageUrl;
+  }
+
+  await updateDoc(
+    doc(db, "tools", editingCard.id),
+    updateData
+  );
+
+  setEditingCard(null);
+  fetchCards();
+}
+
+
+
+
+async function fetchCards() {
+  const snapshot = await getDocs(collection(db, "tools"));
+
+  const data = snapshot.docs.map(doc => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+
+  setCards(data);
+}
+
+useEffect(() => {
+  if (isOpen && activePage === "editCards") {
+    fetchCards();
+  }
+}, [isOpen, activePage]);
+
+
  // ✅ CONTROLE DE VISIBILIDADE AQUI
   if (!isOpen && !closing) {
     return null;
   }
-
-
 
   return (
     <div className={styles.overlay} onClick={handleClose}>
@@ -262,6 +416,21 @@ async function handleDeleteProfile(profile: Perfil) {
   >
     Usuários
   </button>
+
+  <button
+  className={styles.menuItem}
+  onClick={() => setActivePage("addCard")}
+>
+  Adicionar card
+</button>
+
+<button
+  className={styles.menuItem}
+  onClick={() => setActivePage("editCards")}
+>
+  Editar cards
+</button>
+
 
   <button
     className={styles.menuItem}
@@ -438,6 +607,332 @@ async function handleDeleteProfile(profile: Perfil) {
       </div>
     </>
   )}
+
+
+{activePage === "addCard" && (
+  <>
+    <h2>Adicionar Card ao Dashboard</h2>
+
+    <form className={styles.form} onSubmit={handleSaveCard}>
+
+<div className={styles.field}>
+  <label>Imagem da ferramenta (tela interna)</label>
+
+  <label className={styles.uploadBox}>
+    <FiUploadCloud size={28} />
+    <span>Enviar imagem da ferramenta</span>
+
+    {!uploadedImageUrl && (
+  <input
+    type="file"
+    accept="image/*"
+    hidden
+    onChange={(e) => {
+      const file = e.target.files?.[0];
+      if (file) handleUploadImage(file);
+    }}
+  />
+)}
+
+{uploadedImageUrl && (
+  <>
+    <img src={uploadedImageUrl} className={styles.preview} />
+
+    <button
+      type="button"
+      className={styles.cancelBtn}
+      onClick={() => setUploadedImageUrl("")}
+    >
+      Remover imagem
+    </button>
+  </>
+)}
+
+
+  </label>
+
+  {uploadedToolImageUrl && (
+  <>
+    <img
+      src={uploadedToolImageUrl}
+      className={styles.preview}
+    />
+
+    <button
+      type="button"
+      className={styles.cancelBtn}
+      onClick={() => setUploadedToolImageUrl("")}
+    >
+      Remover imagem
+    </button>
+  </>
+)}
+
+</div>
+
+     <div className={styles.field}>
+  <label>Foto do card</label>
+
+  <label className={styles.uploadBox}>
+    <FiUploadCloud size={28} />
+    <span>Clique para enviar imagem</span>
+
+    <input
+      type="file"
+      accept="image/*"
+      hidden
+      onChange={(e) => {
+        const file = e.target.files?.[0];
+        if (file) handleUploadImage(file);
+      }}
+    />
+  </label>
+
+  {uploadedImageUrl && (
+    <img
+      src={uploadedImageUrl}
+      className={styles.preview}
+      alt="preview"
+    />
+  )}
+</div>
+
+
+      <div className={styles.field}>
+        <label>Título do card</label>
+        <input
+          value={cardTitle}
+          onChange={(e) => setCardTitle(e.target.value)}
+        />
+      </div>
+
+      <div className={styles.field}>
+        <label>Descrição</label>
+        <input
+          value={cardDescription}
+          onChange={(e) => setCardDescription(e.target.value)}
+        />
+      </div>
+
+      <div className={styles.field}>
+        <label>Categoria</label>
+        <input
+          placeholder="ia, imagem, video..."
+          value={cardCategory}
+          onChange={(e) => setCardCategory(e.target.value)}
+        />
+      </div>
+
+      <div className={styles.field}>
+        <label>Tool ligada aos perfis</label>
+        <input
+          placeholder="chatgpt"
+          value={cardTool}
+          onChange={(e) => setCardTool(e.target.value)}
+        />
+      </div>
+
+      <div className={styles.saveWrapper}>
+        <button type="submit" className={styles.saveToolBtn}>
+          Salvar card
+        </button>
+      </div>
+    </form>
+  </>
+)}
+
+
+{activePage === "editCards" && (
+  <>
+    <h2>Editar Cards</h2>
+
+    <div className={styles.list}>
+      {cards.map((card) => (
+        <div key={card.id} className={styles.listItem}>
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+            <img
+              src={card.imageUrl}
+              style={{
+                width: 60,
+                height: 60,
+                objectFit: "cover",
+                borderRadius: 8,
+              }}
+            />
+
+            <div>
+              <strong>{card.name}</strong>
+              <p style={{ opacity: 0.7, fontSize: 12 }}>
+                {card.category}
+              </p>
+            </div>
+          </div>
+
+          <button
+            className={styles.editBtn}
+            onClick={() => setEditingCard(card)}
+          >
+            Editar
+          </button>
+        </div>
+      ))}
+
+      {cards.length === 0 && (
+        <div className={styles.empty}>
+          Nenhum card encontrado
+        </div>
+      )}
+    </div>
+  </>
+)}
+
+{editingCard && (
+  <div
+    className={styles.editOverlay}
+    onClick={() => setEditingCard(null)}
+  >
+    <div
+      className={styles.editModal}
+      onClick={(e) => e.stopPropagation()}
+    >
+      <h2>Editar Card</h2>
+
+      <div className={styles.editLayout}>
+        {/* ---------- COLUNA ESQUERDA ---------- */}
+        <div className={styles.left}>
+          <div className={styles.field}>
+            <label>Título</label>
+            <input
+              value={editingCard.name}
+              onChange={(e) =>
+                setEditingCard({
+                  ...editingCard,
+                  name: e.target.value,
+                })
+              }
+            />
+          </div>
+
+          <div className={styles.field}>
+            <label>Descrição</label>
+            <input
+              value={editingCard.description}
+              onChange={(e) =>
+                setEditingCard({
+                  ...editingCard,
+                  description: e.target.value,
+                })
+              }
+            />
+          </div>
+
+          <div className={styles.field}>
+            <label>Categoria</label>
+            <input
+              value={editingCard.category}
+              onChange={(e) =>
+                setEditingCard({
+                  ...editingCard,
+                  category: e.target.value,
+                })
+              }
+            />
+          </div>
+
+          <div className={styles.actionsRow}>
+            <button
+              className={styles.saveBtnSmall}
+              onClick={handleUpdateCard}
+            >
+              Salvar
+            </button>
+
+            <button
+              className={styles.cancelBtnSmall}
+              onClick={() => setEditingCard(null)}
+            >
+              Cancelar
+            </button>
+          </div>
+        </div>
+
+        {/* ---------- COLUNA DIREITA ---------- */}
+        <div className={styles.right}>
+          <div className={styles.imageRow}>
+            {/* Imagem interna */}
+            <div>
+              <p>Imagem interna</p>
+              <img
+                src={editingCard.toolImageUrl}
+                className={styles.smallPreview}
+              />
+
+              <label className={styles.uploadBoxSmall}>
+                Trocar imagem
+                <input
+  type="file"
+  hidden
+  accept="image/*"
+  onChange={async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const url = await handleUploadToolImage(file);
+    if (!url) return;
+
+    setEditingCard({
+      ...editingCard,
+      toolImageUrl: url,
+    });
+  }}
+/>
+
+              </label>
+            </div>
+
+            {/* Imagem do card */}
+            <div>
+              <p>Imagem do card</p>
+              <img
+                src={editingCard.imageUrl}
+                className={styles.smallPreview}
+              />
+
+              <label className={styles.uploadBoxSmall}>
+                Trocar imagem
+                <input
+                  type="file"
+                  hidden
+                  accept="image/*"
+                 onChange={async (e) => {
+  const file = e.target.files?.[0];
+  if (!file) return;
+
+  const url = await handleUploadImage(file);
+if (!url) return;
+
+setEditingCard({
+  ...editingCard,
+  imageUrl: url,
+});
+
+}}
+
+                />
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
+
+      
+
+     
+
+   
 
 
 {activePage === "addTool" && (

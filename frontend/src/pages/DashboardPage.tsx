@@ -138,9 +138,15 @@ const tools = [
 ];
 
 export default function DashboardPage() {
+
+
+  
   const [searchTerm, setSearchTerm] = useState("");
   const [activeFilter, setActiveFilter] = useState("todas");
   const [agentMissing, setAgentMissing] = useState(false);
+
+
+  const [tools, setTools] = useState<any[]>([]);
 
 
   const [profileCounts, setProfileCounts] = useState<Record<string, number>>({});
@@ -163,14 +169,43 @@ export default function DashboardPage() {
 });
 
 
-  const toolsByCategory = filteredTools.reduce((acc, tool) => {
+ const toolsByCategory = filteredTools.reduce<Record<string, typeof filteredTools>>(
+  (acc, tool) => {
     if (!acc[tool.category]) {
       acc[tool.category] = [];
     }
 
     acc[tool.category].push(tool);
     return acc;
-  }, {});
+  },
+  {}
+);
+
+
+async function fetchTools() {
+  const snapshot = await getDocs(collection(db, "tools"));
+
+ const data = snapshot.docs.map(doc => {
+  const d = doc.data();
+
+  return {
+    id: doc.id,
+    name: d.name,
+    description: d.description,
+    category: d.category,
+    image: d.imageUrl, // <-- aqui corrige
+  };
+});
+
+
+  setTools(data);
+}
+
+
+useEffect(() => {
+  fetchTools();
+}, []);
+
 
   useEffect(() => {
     async function check() {

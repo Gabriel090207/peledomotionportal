@@ -5,9 +5,6 @@ import Header from "../../components/Header";
 import ProfileRow from "../../components/ProfileRow/ProfileRow";
 import styles from "./ToolPage.module.css";
 
-import { tools } from "../../data/tools";
-import type { ToolKey } from "../../data/tools";
-
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../services/firebase";
 
@@ -17,6 +14,12 @@ type Perfil = {
   group: string;
   tool: string;
   ativo: boolean;
+};
+
+type Tool = {
+  name: string;
+  description: string;
+  logo: string;
 };
 
 export default function ToolPage() {
@@ -29,40 +32,62 @@ export default function ToolPage() {
   const [profiles, setProfiles] = useState<Perfil[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const tool =
-    toolId && toolId in tools
-      ? tools[toolId as ToolKey]
-      : null;
+  const [tool, setTool] = useState<Tool | null>(null);
 
-  // 🔥 BUSCAR PERFIS PELO TOOL
+  // 🔥 BUSCAR TOOL NO FIRESTORE
+  useEffect(() => {
+    async function fetchTool() {
+      if (!toolId) return;
+
+      const snapshot = await getDocs(collection(db, "tools"));
+
+      const found = snapshot.docs.find(doc => doc.id === toolId);
+
+      if (!found) {
+        setTool(null);
+        return;
+      }
+
+      const data = found.data();
+
+      setTool({
+        name: data.name,
+        description: data.description,
+        logo: data.toolImageUrl || data.imageUrl,
+      });
+    }
+
+    fetchTool();
+  }, [toolId]);
+
+  // 🔥 BUSCAR PERFIS DA TOOL
   useEffect(() => {
     async function fetchProfiles() {
       if (!toolId) return;
-  
+
       setLoading(true);
-  
+
       const q = query(
         collection(db, "perfis"),
         where("tool", "==", toolId),
         where("ativo", "==", true)
       );
-  
+
       const snapshot = await getDocs(q);
-  
+
       const data = snapshot.docs.map((doc) => ({
         profile_id: Number(doc.id),
         ...(doc.data() as Omit<Perfil, "profile_id">),
       }));
-  
+
       setProfiles(data);
       setLoading(false);
     }
-  
+
     fetchProfiles();
   }, [toolId]);
-  
 
-  // ❌ Tool não existe
+  // ❌ Tool não encontrada
   if (!tool) {
     return (
       <div className={styles.page}>
@@ -79,7 +104,10 @@ export default function ToolPage() {
       <Header />
 
       <main className={styles.content}>
-        <button className={styles.back} onClick={() => navigate("/dashboard")}>
+        <button
+          className={styles.back}
+          onClick={() => navigate("/dashboard")}
+        >
           ← Voltar para ferramentas
         </button>
 
@@ -100,8 +128,6 @@ export default function ToolPage() {
           >
             Perfis
           </button>
-
-          
         </div>
 
         <div className={styles.list}>
