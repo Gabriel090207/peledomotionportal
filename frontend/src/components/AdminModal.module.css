@@ -934,6 +934,9 @@ input[type="number"] {
   align-items: flex-start;
 }
 
+.field{
+  margin-bottom: 30px;
+}
 .left {
   flex: 1;
   min-width: 0;
