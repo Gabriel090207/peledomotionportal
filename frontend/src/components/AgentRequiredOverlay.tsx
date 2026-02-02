@@ -7,21 +7,29 @@ export default function AgentRequiredOverlay({
   onDownload,
   onRetry,
 }: Props) {
+  function handleDownload() {
+    const platform = navigator.platform.toLowerCase();
 
- function handleDownload() {
-  const platform = navigator.platform.toLowerCase();
+    let file =
+      "https://peledomotionportal-backend.onrender.com/downloads/agent-mac.zip";
 
-  let file =
-    "https://peledomotionportal-backend.onrender.com/downloads/agent-mac.zip";
+    if (platform.includes("win")) {
+      file =
+        "https://peledomotionportal-backend.onrender.com/downloads/portal-agent-installer.exe";
+    }
 
-  if (platform.includes("win")) {
-    file =
-      "https://peledomotionportal-backend.onrender.com/downloads/portal-agent-installer.exe";
+    // cria link invisível e força download
+    const link = document.createElement("a");
+    link.href = file;
+    link.setAttribute("download", "");
+    link.target = "_blank";
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    onDownload?.();
   }
-
-  window.open(file, "_blank");
-  onDownload?.();
-}
 
   return (
     <div style={styles.overlay}>
@@ -93,8 +101,7 @@ const styles = {
     fontSize: "16px",
     fontWeight: 600,
     color: "#fff",
-    background:
-      "linear-gradient(90deg, var(--p-0), var(--p-1))",
+    background: "linear-gradient(90deg, var(--p-0), var(--p-1))",
     boxShadow: "0 6px 24px rgba(138,0,255,.5)",
     width: "100%",
   },
