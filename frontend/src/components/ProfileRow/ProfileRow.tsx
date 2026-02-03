@@ -1,5 +1,5 @@
 import styles from "./ProfileRow.module.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 type Props = {
   profileId: number;
@@ -17,6 +17,33 @@ export default function ProfileRow({
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [inUse, setInUse] = useState(false);
+
+  async function checkIfProfileIsOpen() {
+    try {
+      const response = await fetch(
+        "http://127.0.0.1:3001/opened-profiles",
+        {
+          method: "POST",
+        }
+      );
+
+      const data = await response.json();
+
+      const openedProfiles = data?.data || [];
+
+      const isOpened = openedProfiles.some(
+        (p: any) => p.profile_id === profileId
+      );
+
+      setInUse(isOpened);
+    } catch (err) {
+      console.error("Erro verificando perfis abertos:", err);
+    }
+  }
+
+  useEffect(() => {
+    checkIfProfileIsOpen();
+  }, []);
 
   async function handleOpenProfile() {
     console.log("PROFILE ID:", profileId);
