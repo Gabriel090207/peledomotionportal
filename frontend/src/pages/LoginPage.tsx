@@ -7,6 +7,10 @@ import {
   sendPasswordResetEmail,
 } from "firebase/auth";
 
+import { getFirestore, doc, getDoc } from "firebase/firestore";
+
+const db = getFirestore();
+
 export default function LoginPage() {
   const navigate = useNavigate();
 
@@ -24,7 +28,28 @@ export default function LoginPage() {
     setError("");
 
     signInWithEmailAndPassword(auth, email, password)
-      .then(() => {
+      .then(async (userCredential) => {
+        const user = userCredential.user;
+
+        // salva UID
+        localStorage.setItem("uid", user.uid);
+
+        // busca dados do usuário no Firestore
+        const userRef = doc(db, "usuarios", user.uid);
+        const userSnap = await getDoc(userRef);
+
+        if (userSnap.exists()) {
+          const userData = userSnap.data();
+
+          // salva se é admin
+          localStorage.setItem(
+            "isAdmin",
+            userData.admin ? "true" : "false"
+          );
+        } else {
+          localStorage.setItem("isAdmin", "false");
+        }
+
         navigate("/dashboard");
       })
       .catch(() => {

@@ -616,94 +616,91 @@ useEffect(() => {
   )}
 
 
+
 {activePage === "addCard" && (
   <>
     <h2>Adicionar Card ao Dashboard</h2>
 
     <form className={styles.form} onSubmit={handleSaveCard}>
 
-<div className={styles.field}>
-  <label>Imagem da ferramenta (tela interna)</label>
+      {/* ---------- IMAGEM INTERNA ---------- */}
+      <div className={styles.field}>
+        <label>Imagem da ferramenta (tela interna)</label>
 
-  <label className={styles.uploadBox}>
-    <FiUploadCloud size={28} />
-    <span>Enviar imagem da ferramenta</span>
+        <label className={styles.uploadBox}>
+          <FiUploadCloud size={28} />
+          <span>Enviar imagem da ferramenta</span>
 
-    {!uploadedImageUrl && (
-  <input
-    type="file"
-    accept="image/*"
-    hidden
-    onChange={(e) => {
-      const file = e.target.files?.[0];
-      if (file) handleUploadImage(file);
-    }}
-  />
-)}
+          {!uploadedToolImageUrl && (
+            <input
+              type="file"
+              accept="image/*"
+              hidden
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) handleUploadToolImage(file);
+              }}
+            />
+          )}
 
-{uploadedImageUrl && (
-  <>
-    <img src={uploadedImageUrl} className={styles.preview} />
+          {uploadedToolImageUrl && (
+            <>
+              <img
+                src={uploadedToolImageUrl}
+                className={styles.preview}
+              />
 
-    <button
-      type="button"
-      className={styles.cancelBtn}
-      onClick={() => setUploadedImageUrl("")}
-    >
-      Remover imagem
-    </button>
-  </>
-)}
+              <button
+                type="button"
+                className={styles.cancelBtn}
+                onClick={() => setUploadedToolImageUrl("")}
+              >
+                Remover imagem
+              </button>
+            </>
+          )}
+        </label>
+      </div>
 
+      {/* ---------- IMAGEM DO CARD ---------- */}
+      <div className={styles.field}>
+        <label>Foto do card</label>
 
-  </label>
+        <label className={styles.uploadBox}>
+          <FiUploadCloud size={28} />
+          <span>Clique para enviar imagem</span>
 
-  {uploadedToolImageUrl && (
-  <>
-    <img
-      src={uploadedToolImageUrl}
-      className={styles.preview}
-    />
+          {!uploadedImageUrl && (
+            <input
+              type="file"
+              accept="image/*"
+              hidden
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) handleUploadImage(file);
+              }}
+            />
+          )}
 
-    <button
-      type="button"
-      className={styles.cancelBtn}
-      onClick={() => setUploadedToolImageUrl("")}
-    >
-      Remover imagem
-    </button>
-  </>
-)}
+          {uploadedImageUrl && (
+            <>
+              <img
+                src={uploadedImageUrl}
+                className={styles.preview}
+                alt="preview"
+              />
 
-</div>
-
-     <div className={styles.field}>
-  <label>Foto do card</label>
-
-  <label className={styles.uploadBox}>
-    <FiUploadCloud size={28} />
-    <span>Clique para enviar imagem</span>
-
-    <input
-      type="file"
-      accept="image/*"
-      hidden
-      onChange={(e) => {
-        const file = e.target.files?.[0];
-        if (file) handleUploadImage(file);
-      }}
-    />
-  </label>
-
-  {uploadedImageUrl && (
-    <img
-      src={uploadedImageUrl}
-      className={styles.preview}
-      alt="preview"
-    />
-  )}
-</div>
-
+              <button
+                type="button"
+                className={styles.cancelBtn}
+                onClick={() => setUploadedImageUrl("")}
+              >
+                Remover imagem
+              </button>
+            </>
+          )}
+        </label>
+      </div>
 
       <div className={styles.field}>
         <label>Título do card</label>
@@ -747,7 +744,6 @@ useEffect(() => {
     </form>
   </>
 )}
-
 
 {activePage === "editCards" && (
   <>

@@ -142,3 +142,11 @@
   }
 
 }
+
+
+.inUseButton {
+  background: #ff3b3b !important;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+

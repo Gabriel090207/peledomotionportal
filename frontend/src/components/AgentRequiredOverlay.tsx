@@ -7,9 +7,15 @@ export default function AgentRequiredOverlay({
   onDownload,
   onRetry,
 }: Props) {
-  function handleDownload() {
-    const platform = navigator.platform.toLowerCase();
 
+
+  let downloading = false;
+
+ function handleDownload() {
+  if (downloading) return;
+  downloading = true;
+
+  const platform = navigator.platform.toLowerCase();
     let file =
       "https://peledomotionportal-backend.onrender.com/downloads/agent-mac.zip";
 
@@ -22,13 +28,20 @@ export default function AgentRequiredOverlay({
     const link = document.createElement("a");
     link.href = file;
     link.setAttribute("download", "");
-    link.target = "_blank";
+    
 
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
 
     onDownload?.();
+
+    onDownload?.();
+
+setTimeout(() => {
+  downloading = false;
+}, 3000);
+
   }
 
   return (

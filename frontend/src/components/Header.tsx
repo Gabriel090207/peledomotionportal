@@ -3,13 +3,15 @@ import styles from "./Header.module.css";
 import logoPM from "../assets/logo-pm.png";
 import { useNavigate } from "react-router-dom";
 import { FiSettings } from "react-icons/fi";
-import AdminModal from "./AdminModal"; // Certifique-se de que o caminho está correto
-import ChangePasswordForm from "../components/ChangePasswordForm"; // Importando o novo componente
+import ChangePasswordForm from "../components/ChangePasswordForm";
+import AdminModal from "./AdminModal";
 
 export default function Header() {
   const navigate = useNavigate();
   const [adminOpen, setAdminOpen] = useState(false);
-  const [passwordModalOpen, setPasswordModalOpen] = useState(false); // Estado para abrir/fechar o modal de troca de senha
+  const [passwordModalOpen, setPasswordModalOpen] = useState(false);
+
+  const isAdmin = localStorage.getItem("isAdmin") === "true";
 
   return (
     <>
@@ -22,7 +24,7 @@ export default function Header() {
         <div className={styles.right}>
           <button
             className={styles.user}
-            onClick={() => setPasswordModalOpen(true)} // Abre o modal de troca de senha
+            onClick={() => setPasswordModalOpen(true)}
           >
             Usuário
           </button>
@@ -34,21 +36,25 @@ export default function Header() {
             Sair
           </button>
 
-          <button
-            className={styles.settings}
-            onClick={() => setAdminOpen(true)}
-          >
-            <FiSettings size={15} />
-          </button>
+          {isAdmin && (
+            <button
+              className={styles.settings}
+              onClick={() => setAdminOpen(true)}
+            >
+              <FiSettings size={15} />
+            </button>
+          )}
         </div>
       </header>
 
       {passwordModalOpen && (
-        <ChangePasswordForm onClose={() => setPasswordModalOpen(false)} /> // Exibe o formulário de troca de senha
+        <ChangePasswordForm onClose={() => setPasswordModalOpen(false)} />
       )}
 
-      {/* Modal para configurações admin */}
-      <AdminModal isOpen={adminOpen} onClose={() => setAdminOpen(false)} />
+      <AdminModal
+        isOpen={adminOpen}
+        onClose={() => setAdminOpen(false)}
+      />
     </>
   );
 }
