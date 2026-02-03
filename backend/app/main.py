@@ -9,6 +9,12 @@ from fastapi.staticfiles import StaticFiles
 
 app = FastAPI()
 
+
+# ------------------------------
+# Perfis em uso (memória)
+# ------------------------------
+profiles_in_use = set()
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -30,3 +36,4 @@ app.mount("/downloads", StaticFiles(directory="public"), name="downloads")
 @app.get("/")
 def root():
     return {"status": "API online"}
+

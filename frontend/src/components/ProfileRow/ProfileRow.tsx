@@ -1,5 +1,5 @@
 import styles from "./ProfileRow.module.css";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 type Props = {
   profileId: number;
@@ -61,43 +61,6 @@ export default function ProfileRow({
     }
   }
 
-  async function checkProfileInUse() {
-    try {
-      const response = await fetch(
-        "http://127.0.0.1:3001/open-profile",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            profile_id: profileId,
-          }),
-        }
-      );
-
-      const data = await response.json();
-
-      if (data?.error?.code === 111003) {
-        setInUse(true);
-      } else {
-        setInUse(false);
-      }
-    } catch (err) {
-      console.error("Erro ao verificar perfil:", err);
-    }
-  }
-
-  useEffect(() => {
-    checkProfileInUse();
-
-    const interval = setInterval(() => {
-      checkProfileInUse();
-    }, 300000); // 5 minutos
-
-    return () => clearInterval(interval);
-  }, []);
-
   return (
     <div className="rowcontent">
       <div className={styles.row}>
@@ -113,12 +76,11 @@ export default function ProfileRow({
         </span>
 
         <button
-  onClick={handleOpenProfile}
-  disabled={status !== "active" || loading}
-  className={inUse ? styles.inUseButton : ""}
->
-
-          {loading ? "Abrindo..." : "Acessar"}
+          onClick={handleOpenProfile}
+          disabled={status !== "active" || loading}
+          className={inUse ? styles.inUseButton : ""}
+        >
+          {loading ? "Abrindo..." : inUse ? "Em uso" : "Acessar"}
         </button>
 
         {errorMsg && (

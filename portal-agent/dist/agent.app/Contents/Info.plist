@@ -4,35 +4,21 @@
 <dict>
 	<key>CFBundleDisplayName</key>
 	<string>agent</string>
-
 	<key>CFBundleExecutable</key>
 	<string>agent</string>
-
 	<key>CFBundleIconFile</key>
 	<string>icon-windowed.icns</string>
-
 	<key>CFBundleIdentifier</key>
 	<string>agent</string>
-
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
-
 	<key>CFBundleName</key>
 	<string>agent</string>
-
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
-
 	<key>CFBundleShortVersionString</key>
 	<string>0.0.0</string>
-
 	<key>NSHighResolutionCapable</key>
 	<true/>
-
-	<!-- 👇 NOVO -->
-	<key>LSUIElement</key>
-	<true/>
-
 </dict>
 </plist>
-
