@@ -46,8 +46,15 @@ export default function LoginPage() {
             "isAdmin",
             userData.admin ? "true" : "false"
           );
+
+          // salva plano do usuário
+          localStorage.setItem(
+            "plano",
+            userData.plano || "prata"
+          );
         } else {
           localStorage.setItem("isAdmin", "false");
+          localStorage.setItem("plano", "prata");
         }
 
         navigate("/dashboard");
@@ -173,3 +180,4 @@ export default function LoginPage() {
     </>
   );
 }
+

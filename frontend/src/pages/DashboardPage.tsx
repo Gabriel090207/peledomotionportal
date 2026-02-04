@@ -47,19 +47,33 @@ export default function DashboardPage() {
   }, {});
 
   async function fetchTools() {
+    // 👇 pega plano salvo no login
+    const plano = localStorage.getItem("plano") || "prata";
+
     const snapshot = await getDocs(collection(db, "tools"));
 
-    const data = snapshot.docs.map((doc) => {
-      const d = doc.data();
+    const data = snapshot.docs
+      .map((doc) => {
+        const d = doc.data();
 
-      return {
-        id: doc.id,
-        name: d.name,
-        description: d.description,
-        category: d.category,
-        image: d.imageUrl,
-      };
-    });
+        return {
+          id: doc.id,
+          name: d.name,
+          description: d.description,
+          category: d.category,
+          image: d.imageUrl,
+          planoOuro: d.planoOuro,
+          planoPrata: d.planoPrata,
+        };
+      })
+      .filter((tool) => {
+        // se campo não existir, considera liberado
+        if (plano === "ouro") {
+          return tool.planoOuro !== false;
+        }
+
+        return tool.planoPrata !== false;
+      });
 
     setTools(data);
   }

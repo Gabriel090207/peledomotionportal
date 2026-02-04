@@ -41,8 +41,11 @@ type Perfil = {
   group: string;
   tool: string;
   ativo: boolean;
-};
 
+  // ✅ controle por plano
+  planoOuro?: boolean;
+  planoPrata?: boolean;
+};
 
 
 
@@ -74,6 +77,11 @@ const [cardDescription, setCardDescription] = useState("");
 const [cardCategory, setCardCategory] = useState("");
 const [cardTool, setCardTool] = useState("");
 
+const [planoOuro, setPlanoOuro] = useState(true);
+const [planoPrata, setPlanoPrata] = useState(true);
+
+const [perfilPlanoOuro, setPerfilPlanoOuro] = useState(true);
+const [perfilPlanoPrata, setPerfilPlanoPrata] = useState(true);
 
 
 const [editingProfile, setEditingProfile] = useState<Perfil | null>(null);
@@ -81,6 +89,9 @@ const [editingProfile, setEditingProfile] = useState<Perfil | null>(null);
 const [editName, setEditName] = useState("");
 const [editGroup, setEditGroup] = useState("");
 const [editTool, setEditTool] = useState("");
+
+const [editPlanoOuro, setEditPlanoOuro] = useState(true);
+const [editPlanoPrata, setEditPlanoPrata] = useState(true);
 
 const [perfis, setPerfis] = useState<Perfil[]>([]);
 
@@ -168,14 +179,16 @@ async function handleSaveProfile(e: React.FormEvent) {
   setSaving(true);
 
   try {
-    await setDoc(doc(db, "perfis", String(profileId)), {
-      profile_id: profileId,
-      name: profileName,
-      group: group,
-      tool: tool, // 👈 A CHAVE DA ROTA
-      ativo: true,
-      criado_em: serverTimestamp(),
-    });
+   await setDoc(doc(db, "perfis", String(profileId)), {
+  profile_id: profileId,
+  name: profileName,
+  group: group,
+  tool: tool,
+  ativo: true,
+  planoOuro: perfilPlanoOuro,
+  planoPrata: perfilPlanoPrata,
+  criado_em: serverTimestamp(),
+});
 
     alert("Perfil salvo com sucesso!");
 
@@ -218,13 +231,16 @@ async function handleUpdateProfile() {
 
   try {
     await updateDoc(
-      doc(db, "perfis", editingProfile.id), // ✅ ID REAL DO DOC
-      {
-        name: editName,
-        group: editGroup,
-        tool: editTool,
-      }
-    );
+  doc(db, "perfis", editingProfile.id),
+  {
+    name: editName,
+    group: editGroup,
+    tool: editTool,
+    planoOuro: editPlanoOuro,
+    planoPrata: editPlanoPrata,
+  }
+);
+
 
     alert("Perfil atualizado com sucesso!");
     setEditingProfile(null);
@@ -291,16 +307,17 @@ async function handleSaveCard(e: React.FormEvent) {
 
   try {
     await setDoc(doc(db, "tools", cardTool), {
-      name: cardTitle,
-      description: cardDescription,
-      category: cardCategory,
+  name: cardTitle,
+  description: cardDescription,
+  category: cardCategory,
+  imageUrl: uploadedImageUrl,
+  toolImageUrl: uploadedToolImageUrl,
+  planoOuro: planoOuro,
+  planoPrata: planoPrata,
+  active: true,
+  createdAt: serverTimestamp(),
+});
 
-      imageUrl: uploadedImageUrl,          // card
-      toolImageUrl: uploadedToolImageUrl,  // tela interna
-
-      active: true,
-      createdAt: serverTimestamp(),
-    });
 
     alert("Card criado!");
 
@@ -310,6 +327,9 @@ async function handleSaveCard(e: React.FormEvent) {
     setCardTool("");
     setUploadedImageUrl("");
     setUploadedToolImageUrl("");
+    setPlanoOuro(true);
+setPlanoPrata(true);
+
   } catch (err) {
     console.error(err);
     alert("Erro ao salvar");
@@ -344,11 +364,14 @@ async function handleUploadToolImage(file: File) {
 async function handleUpdateCard() {
   if (!editingCard) return;
 
-  const updateData: any = {
-    name: editingCard.name,
-    description: editingCard.description,
-    category: editingCard.category,
-  };
+ const updateData: any = {
+  name: editingCard.name,
+  description: editingCard.description,
+  category: editingCard.category,
+  planoOuro: editingCard.planoOuro ?? true,
+  planoPrata: editingCard.planoPrata ?? true,
+};
+
 
   // só envia se existir
   if (editingCard.imageUrl) {
@@ -735,6 +758,40 @@ useEffect(() => {
           onChange={(e) => setCardTool(e.target.value)}
         />
       </div>
+<div className={styles.field}>
+  <label>Disponível nos planos</label>
+
+  <div className={styles.planToggleGroup}>
+    {/* OURO */}
+    <div className={styles.planToggleLabel}>
+      Combo Ouro
+
+      <label className={styles.switch}>
+        <input
+          type="checkbox"
+          checked={planoOuro}
+          onChange={(e) => setPlanoOuro(e.target.checked)}
+        />
+        <span className={styles.slider}></span>
+      </label>
+    </div>
+
+    {/* PRATA */}
+    <div className={styles.planToggleLabel}>
+      Combo Prata
+
+      <label className={styles.switch}>
+        <input
+          type="checkbox"
+          checked={planoPrata}
+          onChange={(e) => setPlanoPrata(e.target.checked)}
+        />
+        <span className={styles.slider}></span>
+      </label>
+    </div>
+  </div>
+</div>
+
 
       <div className={styles.saveWrapper}>
         <button type="submit" className={styles.saveToolBtn}>
@@ -841,6 +898,49 @@ useEffect(() => {
               }
             />
           </div>
+
+          <div className={styles.field}>
+  <label>Disponível nos planos</label>
+
+  <div className={styles.planToggleGroup}>
+    <div className={styles.planToggleLabel}>
+      Combo Ouro
+
+      <label className={styles.switch}>
+        <input
+          type="checkbox"
+          checked={editingCard.planoOuro ?? true}
+          onChange={(e) =>
+            setEditingCard({
+              ...editingCard,
+              planoOuro: e.target.checked,
+            })
+          }
+        />
+        <span className={styles.slider}></span>
+      </label>
+    </div>
+
+    <div className={styles.planToggleLabel}>
+      Combo Prata
+
+      <label className={styles.switch}>
+        <input
+          type="checkbox"
+          checked={editingCard.planoPrata ?? true}
+          onChange={(e) =>
+            setEditingCard({
+              ...editingCard,
+              planoPrata: e.target.checked,
+            })
+          }
+        />
+        <span className={styles.slider}></span>
+      </label>
+    </div>
+  </div>
+</div>
+
 
           <div className={styles.actionsRow}>
             <button
@@ -986,6 +1086,37 @@ setEditingCard({
     />
   </div>
 
+
+<div className={styles.field}>
+  <label>Disponível nos planos</label>
+
+  <div className={styles.planToggleGroup}>
+    <div className={styles.planToggleLabel}>
+      Combo Ouro
+      <label className={styles.switch}>
+        <input
+          type="checkbox"
+          checked={perfilPlanoOuro}
+          onChange={(e) => setPerfilPlanoOuro(e.target.checked)}
+        />
+        <span className={styles.slider}></span>
+      </label>
+    </div>
+
+    <div className={styles.planToggleLabel}>
+      Combo Prata
+      <label className={styles.switch}>
+        <input
+          type="checkbox"
+          checked={perfilPlanoPrata}
+          onChange={(e) => setPerfilPlanoPrata(e.target.checked)}
+        />
+        <span className={styles.slider}></span>
+      </label>
+    </div>
+  </div>
+</div>
+
 <div className={styles.saveWrapper}>
   <button
     type="submit"
@@ -1035,7 +1166,11 @@ setEditingCard({
   setEditName(perfil.name);
   setEditGroup(perfil.group);
   setEditTool(perfil.tool);
+
+  setEditPlanoOuro(perfil.planoOuro ?? true);
+  setEditPlanoPrata(perfil.planoPrata ?? true);
 }}
+
 
         >
           Editar
@@ -1071,6 +1206,37 @@ setEditingCard({
           <label>Ferramenta</label>
           <input value={editTool} onChange={(e) => setEditTool(e.target.value)} />
         </div>
+
+        <div className={styles.field}>
+  <label>Disponível nos planos</label>
+
+  <div className={styles.planToggleGroup}>
+    <div className={styles.planToggleLabel}>
+      Combo Ouro
+      <label className={styles.switch}>
+        <input
+          type="checkbox"
+          checked={editPlanoOuro}
+          onChange={(e) => setEditPlanoOuro(e.target.checked)}
+        />
+        <span className={styles.slider}></span>
+      </label>
+    </div>
+
+    <div className={styles.planToggleLabel}>
+      Combo Prata
+      <label className={styles.switch}>
+        <input
+          type="checkbox"
+          checked={editPlanoPrata}
+          onChange={(e) => setEditPlanoPrata(e.target.checked)}
+        />
+        <span className={styles.slider}></span>
+      </label>
+    </div>
+  </div>
+</div>
+
 
         <div className={styles.actions}>
           <button
