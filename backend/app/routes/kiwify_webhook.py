@@ -15,11 +15,14 @@ async def webhook_kiwify(request: Request):
         event_type = payload.get("webhook_event_type")
         order_status = payload.get("order_status")
 
-        # Validar evento correto
+        # valida evento correto
         if event_type != "order_approved" or order_status != "paid":
             print("ℹ️ Evento ignorado:", event_type, order_status)
             return {"ok": True, "ignored": True}
 
+        # ------------------------------
+        # dados do cliente
+        # ------------------------------
         customer = payload.get("Customer", {})
         email = customer.get("email")
         nome = customer.get("full_name")
@@ -31,13 +34,31 @@ async def webhook_kiwify(request: Request):
         print("Email:", email)
         print("Nome:", nome)
 
-        # Cria usuário + envia email
-        resultado = criar_usuario_e_enviar_email(email)
+        # ------------------------------
+        # IDENTIFICA O PLANO COMPRADO
+        # ------------------------------
+        product = payload.get("Product", {})
+        nome_produto = product.get("product_name", "").lower()
+
+        print("Produto recebido:", nome_produto)
+
+        if "ouro" in nome_produto:
+            plano = "ouro"
+        else:
+            plano = "prata"
+
+        print("Plano detectado:", plano)
+
+        # ------------------------------
+        # cria usuário e salva plano
+        # ------------------------------
+        resultado = criar_usuario_e_enviar_email(email, plano)
 
         return {
             "ok": True,
             "uid": resultado["uid"],
-            "email": resultado["email"]
+            "email": resultado["email"],
+            "plano": plano
         }
 
     except Exception as e:
