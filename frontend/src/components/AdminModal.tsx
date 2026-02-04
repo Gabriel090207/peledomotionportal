@@ -242,7 +242,7 @@ async function handleUpdateProfile() {
 );
 
 
-    alert("Perfil atualizado com sucesso!");
+
     setEditingProfile(null);
     fetchPerfis();
   } catch (err) {
