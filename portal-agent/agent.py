@@ -14,6 +14,8 @@ app.add_middleware(
 
 IXBROWSER_API = "http://127.0.0.1:53200/api/v2/profile-open"
 
+IXBROWSER_OPENED_LIST = "http://127.0.0.1:53200/api/v2/profile-opened-list"
+
 @app.get("/health")
 def health():
     return {"status": "running"}
@@ -33,6 +35,16 @@ def open_profile(data: dict):
     )
 
     return resp.json()
+
+@app.post("/opened-profiles")
+def opened_profiles():
+    resp = requests.post(
+        IXBROWSER_OPENED_LIST,
+        json={}
+    )
+
+    return resp.json()
+
 
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=3001, log_config=None)

@@ -14,6 +14,8 @@ type Perfil = {
   group: string;
   tool: string;
   ativo: boolean;
+  planoOuro?: boolean;
+  planoPrata?: boolean;
 };
 
 type Tool = {
@@ -34,14 +36,14 @@ export default function ToolPage() {
 
   const [tool, setTool] = useState<Tool | null>(null);
 
-  // 🔥 BUSCAR TOOL NO FIRESTORE
+  // 🔥 BUSCAR TOOL
   useEffect(() => {
     async function fetchTool() {
       if (!toolId) return;
 
       const snapshot = await getDocs(collection(db, "tools"));
 
-      const found = snapshot.docs.find(doc => doc.id === toolId);
+      const found = snapshot.docs.find((doc) => doc.id === toolId);
 
       if (!found) {
         setTool(null);
@@ -60,12 +62,14 @@ export default function ToolPage() {
     fetchTool();
   }, [toolId]);
 
-  // 🔥 BUSCAR PERFIS DA TOOL
+  // 🔥 BUSCAR PERFIS + FILTRAR POR PLANO
   useEffect(() => {
     async function fetchProfiles() {
       if (!toolId) return;
 
       setLoading(true);
+
+      const plano = localStorage.getItem("plano") || "prata";
 
       const q = query(
         collection(db, "perfis"),
@@ -75,10 +79,18 @@ export default function ToolPage() {
 
       const snapshot = await getDocs(q);
 
-      const data = snapshot.docs.map((doc) => ({
-        profile_id: Number(doc.id),
-        ...(doc.data() as Omit<Perfil, "profile_id">),
-      }));
+      const data = snapshot.docs
+        .map((doc) => ({
+          profile_id: Number(doc.id),
+          ...(doc.data() as Omit<Perfil, "profile_id">),
+        }))
+        .filter((perfil: any) => {
+          if (plano === "ouro") {
+            return perfil.planoOuro !== false;
+          }
+
+          return perfil.planoPrata !== false;
+        });
 
       setProfiles(data);
       setLoading(false);
