@@ -10,6 +10,9 @@ def enviar_email_credenciais(destinatario: str, senha: str):
     if not api_key:
         raise RuntimeError("RESEND_API_KEY não configurada")
 
+    # Senha iXBrowser = email antes do @
+    senha_ixbrowser = destinatario.split("@")[0]
+
     html = f"""
 <!DOCTYPE html>
 <html>
@@ -29,11 +32,11 @@ def enviar_email_credenciais(destinatario: str, senha: str):
             <!-- HEADER -->
             <tr>
               <td style="background:#8a00ff;padding:22px 30px;">
-                <h1 style="margin:0;font-size:20px;color:#ffffff;font-weight:800;">
+                <h1 style="margin:0;font-size:20px;font-weight:800;">
                   🚀 Pelé do Motion
                 </h1>
                 <p style="margin:6px 0 0;font-size:14px;color:#f6f2ff;">
-                  Seu acesso ao portal foi liberado
+                  Seu acesso foi liberado
                 </p>
               </td>
             </tr>
@@ -41,78 +44,85 @@ def enviar_email_credenciais(destinatario: str, senha: str):
             <!-- BODY -->
             <tr>
               <td style="padding:30px;">
-                <h2 style="margin:0 0 10px;color:#ffffff;font-size:22px;">
-                  Bem-vindo ao painel mais completo de IA do mercado
+
+                <h2 style="margin:0 0 14px;font-size:22px;">
+                  Bem-vindo ao ecossistema Pelé do Motion
                 </h2>
 
                 <p style="margin:0 0 24px;color:#b9a7d6;font-size:15px;line-height:1.6;">
-                  Centralize ferramentas premium, automatize processos e potencialize
-                  sua performance digital em um só lugar.
+                  Abaixo estão suas credenciais e acessos importantes.
                 </p>
 
-                <!-- CARD -->
-                <div style="
-                  background:#0f0a1f;
-                  border-radius:14px;
-                  padding:20px;
-                  border:1px solid rgba(255,255,255,.08);
-                ">
-                  <p style="margin:0 0 6px;color:#b9a7d6;font-size:13px;">
-                    Email de acesso
-                  </p>
-                 <p style="margin:0 0 14px;font-size:15px;font-weight:600;">
-  <a
-    href="mailto:{destinatario}"
-    style="
-      color:#ffffff !important;
-      text-decoration:none !important;
-      cursor:default;
-      pointer-events:none;
-      font-weight:600;
-      font-size:15px;
-      display:inline-block;
-    "
-  >
-    {destinatario}
-  </a>
-</p>
-
-
-                  <p style="margin:0 0 6px;color:#b9a7d6;font-size:13px;">
-                    Senha temporária
-                  </p>
-                  <p style="margin:0;color:#ffffff;font-size:16px;font-weight:700;">
-                    {senha}
-                  </p>
+                <!-- CARD PORTAL -->
+                <div style="background:#0f0a1f;border-radius:14px;padding:20px;border:1px solid rgba(255,255,255,.08);margin-bottom:20px;">
+                  <strong>🔐 Portal</strong><br><br>
+                  Email: {destinatario}<br><br>
+                  Senha temporária: <strong>{senha}</strong>
                 </div>
 
-                <!-- BUTTON -->
-                <div style="text-align:center;margin:28px 0;">
-                  <a href="https://peledomotionportal.netlify.app/login"
-                    style="
-                      display:inline-block;
-                      background:#8a00ff;
-                      color:#ffffff !important;
-                      text-decoration:none;
-                      padding:14px 36px;
-                      border-radius:999px;
-                      font-weight:700;
-                      font-size:15px;
-                    ">
-                    Acessar o portal
-                  </a>
+                <!-- CARD IXBROWSER -->
+                <div style="background:#0f0a1f;border-radius:14px;padding:20px;border:1px solid rgba(255,255,255,.08);margin-bottom:30px;">
+                  <strong>🌐 iXBrowser</strong><br><br>
+                  Email: {destinatario}<br><br>
+                  Senha: <strong>{senha_ixbrowser}</strong>
                 </div>
 
-                <p style="margin:0;color:#b9a7d6;font-size:13px;text-align:center;">
+                <!-- BOTÕES 2x2 -->
+                <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:30px;">
+                  <tr>
+                    <td align="center">
+
+                      <!-- LINHA 1 -->
+                      <table cellpadding="0" cellspacing="0">
+                        <tr>
+                          <td style="padding:8px;">
+                            <a href="https://wa.me/558491597264"
+                              style="display:inline-block;background:#25D366;color:#ffffff;text-decoration:none;padding:14px 26px;border-radius:999px;font-weight:700;width:220px;text-align:center;">
+                              📞 Suporte
+                            </a>
+                          </td>
+                          <td style="padding:8px;">
+                            <a href="https://ixbrowser.com/download"
+                              style="display:inline-block;background:#0066ff;color:#ffffff;text-decoration:none;padding:14px 26px;border-radius:999px;font-weight:700;width:220px;text-align:center;">
+                              🌐 iXBrowser
+                            </a>
+                          </td>
+                        </tr>
+                      </table>
+
+                      <!-- LINHA 2 -->
+                      <table cellpadding="0" cellspacing="0">
+                        <tr>
+                          <td style="padding:8px;">
+                            <a href="https://seuvideo.com/tutorial"
+                              style="display:inline-block;background:#ff005c;color:#ffffff;text-decoration:none;padding:14px 26px;border-radius:999px;font-weight:700;width:220px;text-align:center;">
+                              🎥 Tutorial
+                            </a>
+                          </td>
+                          <td style="padding:8px;">
+                            <a href="https://portal.peledomotion.com"
+                              style="display:inline-block;background:#8a00ff;color:#ffffff;text-decoration:none;padding:14px 26px;border-radius:999px;font-weight:700;width:220px;text-align:center;">
+                              🚀 Acessar Portal
+                            </a>
+                          </td>
+                        </tr>
+                      </table>
+
+                    </td>
+                  </tr>
+                </table>
+
+                <p style="text-align:center;font-size:13px;color:#b9a7d6;">
                   Recomendamos alterar sua senha após o primeiro acesso.
                 </p>
+
               </td>
             </tr>
 
             <!-- FOOTER -->
             <tr>
               <td style="padding:18px;text-align:center;background:#06010d;">
-                <p style="margin:0;color:#b9a7d6;font-size:12px;">
+                <p style="margin:0;font-size:12px;color:#b9a7d6;">
                   © {datetime.now().year} Pelé do Motion — Todos os direitos reservados
                 </p>
               </td>
@@ -126,7 +136,6 @@ def enviar_email_credenciais(destinatario: str, senha: str):
 </html>
 """
 
-
     response = requests.post(
         "https://api.resend.com/emails",
         headers={
@@ -136,7 +145,7 @@ def enviar_email_credenciais(destinatario: str, senha: str):
         json={
             "from": email_from,
             "to": [destinatario],
-            "subject": "🚀 Seu acesso ao Pelé do Motion foi liberado",
+            "subject": "🚀 Seus acessos ao Pelé do Motion",
             "html": html,
         },
         timeout=15,
