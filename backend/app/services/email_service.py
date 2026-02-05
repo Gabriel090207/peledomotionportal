@@ -94,7 +94,7 @@ def enviar_email_credenciais(destinatario: str, senha: str):
                             </a>
                           </td>
                           <td style="padding:8px;">
-                            <a href="https://prestoprivate8190a4d.b-cdn.net/IxBrowser/ixBrowser.exe"
+                            <a href="https://ixbrowser.com/pt/download-page"
                               style="display:inline-block;background:#0066ff;color:#ffffff;text-decoration:none;padding:14px 26px;border-radius:999px;font-weight:700;width:220px;text-align:center;">
                               🌐 iXBrowser
                             </a>
@@ -112,7 +112,7 @@ def enviar_email_credenciais(destinatario: str, senha: str):
                             </a>
                           </td>
                           <td style="padding:8px;">
-                            <a href="https://portal.peledomotion.com"
+                            <a href="https://peledomotionportal.netlify.app"
                               style="display:inline-block;background:#8a00ff;color:#ffffff;text-decoration:none;padding:14px 26px;border-radius:999px;font-weight:700;width:220px;text-align:center;">
                               🚀 Acessar Portal
                             </a>
