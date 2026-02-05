@@ -106,13 +106,13 @@ def enviar_email_credenciais(destinatario: str, senha: str):
                       <table cellpadding="0" cellspacing="0">
                         <tr>
                           <td style="padding:8px;">
-                            <a href="https://seuvideo.com/tutorial"
+                            <a href="https://drive.google.com/file/d/1EPTVPiizKw7gwaTNEFJAPgKjMCOLOGY_/view?usp=sharing"
                               style="display:inline-block;background:#ff005c;color:#ffffff;text-decoration:none;padding:14px 26px;border-radius:999px;font-weight:700;width:220px;text-align:center;">
                               🎥 Tutorial
                             </a>
                           </td>
                           <td style="padding:8px;">
-                            <a href="https://peledomotionportal.netlify.app"
+                            <a href="https://portal.peledomotion.com"
                               style="display:inline-block;background:#8a00ff;color:#ffffff;text-decoration:none;padding:14px 26px;border-radius:999px;font-weight:700;width:220px;text-align:center;">
                               🚀 Acessar Portal
                             </a>
