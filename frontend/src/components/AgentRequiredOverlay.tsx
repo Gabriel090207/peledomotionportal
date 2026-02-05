@@ -70,7 +70,7 @@ export default function AgentRequiredOverlay({
             style={{ borderRadius: 12, marginTop: 12 }}
           >
             {/* troque pelo caminho real do vídeo */}
-            <source src="/tutorial.mp4" type="video/mp4" />
+            <source src="/video.mp4" type="video/mp4" />
           </video>
 
           <button
