@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type Props = {
   onDownload: () => void;
@@ -10,11 +10,34 @@ export default function AgentRequiredOverlay({
   onRetry,
 }: Props) {
 
-  // tutorial aparece primeiro quando overlay é aberto
   const [showTutorial, setShowTutorial] = useState(true);
   const [videoFinished, setVideoFinished] = useState(false);
 
+  const [canSkip, setCanSkip] = useState(false);
+  const [countdown, setCountdown] = useState(10);
+
   const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  /* =======================
+     CONTADOR 10s
+  ======================== */
+  useEffect(() => {
+    if (!showTutorial) return;
+
+    let time = 10;
+
+    const interval = setInterval(() => {
+      time -= 1;
+      setCountdown(time);
+
+      if (time <= 0) {
+        setCanSkip(true);
+        clearInterval(interval);
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [showTutorial]);
 
   function finishTutorial() {
     setShowTutorial(false);
@@ -66,21 +89,32 @@ export default function AgentRequiredOverlay({
             width="100%"
             controls
             autoPlay
-            onEnded={() => setVideoFinished(true)}
+            muted
+            preload="auto"
+            onEnded={() => {
+              setVideoFinished(true);
+              setCanSkip(true);
+            }}
             style={{ borderRadius: 12, marginTop: 12 }}
           >
-            {/* troque pelo caminho real do vídeo */}
             <source src="/video.mp4" type="video/mp4" />
           </video>
+
+          {!canSkip && !videoFinished && (
+            <p style={{ marginTop: 12, color: "var(--muted)" }}>
+              Continue disponível em {countdown}s
+            </p>
+          )}
 
           <button
             style={{
               ...styles.primaryButton,
               marginTop: 20,
-              opacity: videoFinished ? 1 : 0.5,
-              cursor: videoFinished ? "pointer" : "not-allowed",
+              opacity: videoFinished || canSkip ? 1 : 0.5,
+              cursor:
+                videoFinished || canSkip ? "pointer" : "not-allowed",
             }}
-            disabled={!videoFinished}
+            disabled={!videoFinished && !canSkip}
             onClick={finishTutorial}
           >
             Continuar
