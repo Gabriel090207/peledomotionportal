@@ -1,3 +1,5 @@
+import { useRef, useState } from "react";
+
 type Props = {
   onDownload: () => void;
   onRetry: () => void;
@@ -8,14 +10,24 @@ export default function AgentRequiredOverlay({
   onRetry,
 }: Props) {
 
+  // tutorial aparece primeiro quando overlay é aberto
+  const [showTutorial, setShowTutorial] = useState(true);
+  const [videoFinished, setVideoFinished] = useState(false);
+
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  function finishTutorial() {
+    setShowTutorial(false);
+  }
 
   let downloading = false;
 
- function handleDownload() {
-  if (downloading) return;
-  downloading = true;
+  function handleDownload() {
+    if (downloading) return;
+    downloading = true;
 
-  const platform = navigator.platform.toLowerCase();
+    const platform = navigator.platform.toLowerCase();
+
     let file =
       "https://peledomotionportal-backend.onrender.com/downloads/agent-mac.zip";
 
@@ -24,11 +36,9 @@ export default function AgentRequiredOverlay({
         "https://peledomotionportal-backend.onrender.com/downloads/portal-agent-installer.exe";
     }
 
-    // cria link invisível e força download
     const link = document.createElement("a");
     link.href = file;
     link.setAttribute("download", "");
-    
 
     document.body.appendChild(link);
     link.click();
@@ -36,13 +46,53 @@ export default function AgentRequiredOverlay({
 
     onDownload?.();
 
-    onDownload?.();
-
-setTimeout(() => {
-  downloading = false;
-}, 3000);
-
+    setTimeout(() => {
+      downloading = false;
+    }, 3000);
   }
+
+  /* =======================
+     TUTORIAL
+  ======================== */
+
+  if (showTutorial) {
+    return (
+      <div style={styles.overlay}>
+        <div style={{ ...styles.card, maxWidth: 720 }}>
+          <h2 style={styles.title}>Tutorial rápido</h2>
+
+          <video
+            ref={videoRef}
+            width="100%"
+            controls
+            autoPlay
+            onEnded={() => setVideoFinished(true)}
+            style={{ borderRadius: 12, marginTop: 12 }}
+          >
+            {/* troque pelo caminho real do vídeo */}
+            <source src="/tutorial.mp4" type="video/mp4" />
+          </video>
+
+          <button
+            style={{
+              ...styles.primaryButton,
+              marginTop: 20,
+              opacity: videoFinished ? 1 : 0.5,
+              cursor: videoFinished ? "pointer" : "not-allowed",
+            }}
+            disabled={!videoFinished}
+            onClick={finishTutorial}
+          >
+            Continuar
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  /* =======================
+     MODAL DOWNLOAD AGENT
+  ======================== */
 
   return (
     <div style={styles.overlay}>
