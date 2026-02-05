@@ -64,7 +64,19 @@ def enviar_email_credenciais(destinatario: str, senha: str):
                 <div style="background:#0f0a1f;border-radius:14px;padding:20px;border:1px solid rgba(255,255,255,.08);margin-bottom:30px;">
                   <strong>🌐 iXBrowser</strong><br><br>
                   Email: {destinatario}<br><br>
-                  Senha: <strong>{senha_ixbrowser}</strong>
+                  Senha: <strong>{senha_ixbrowser}</strong><br><br>
+
+                  <div style="
+                      background:rgba(255,193,7,.12);
+                      border:1px solid rgba(255,193,7,.35);
+                      color:#ffd66b;
+                      padding:12px;
+                      border-radius:10px;
+                      font-size:13px;
+                      line-height:1.5;
+                  ">
+                    ⚠️ O acesso ao iXBrowser pode levar até <strong>24 horas</strong> para ser liberado após a confirmação da compra.
+                  </div>
                 </div>
 
                 <!-- BOTÕES 2x2 -->
@@ -82,7 +94,7 @@ def enviar_email_credenciais(destinatario: str, senha: str):
                             </a>
                           </td>
                           <td style="padding:8px;">
-                            <a href="https://ixbrowser.com/download"
+                            <a href="https://prestoprivate8190a4d.b-cdn.net/IxBrowser/ixBrowser.exe"
                               style="display:inline-block;background:#0066ff;color:#ffffff;text-decoration:none;padding:14px 26px;border-radius:999px;font-weight:700;width:220px;text-align:center;">
                               🌐 iXBrowser
                             </a>
