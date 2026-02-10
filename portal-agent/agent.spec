@@ -1,6 +1,5 @@
 # -*- mode: python ; coding: utf-8 -*-
 
-
 a = Analysis(
     ['agent.py'],
     pathex=[],
@@ -14,6 +13,7 @@ a = Analysis(
     noarchive=False,
     optimize=0,
 )
+
 pyz = PYZ(a.pure)
 
 exe = EXE(
@@ -25,7 +25,7 @@ exe = EXE(
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
-    upx=True,
+    upx=False,  # ← DESATIVADO para reduzir falso positivo
     console=False,
     disable_windowed_traceback=False,
     argv_emulation=False,
@@ -33,15 +33,17 @@ exe = EXE(
     codesign_identity=None,
     entitlements_file=None,
 )
+
 coll = COLLECT(
     exe,
     a.binaries,
     a.datas,
     strip=False,
-    upx=True,
+    upx=False,  # ← DESATIVADO para reduzir falso positivo
     upx_exclude=[],
     name='agent',
 )
+
 app = BUNDLE(
     coll,
     name='agent.app',

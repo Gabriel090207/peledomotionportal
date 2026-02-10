@@ -54,10 +54,11 @@ export default function AgentRequiredOverlay({
     let file =
       "https://peledomotionportal-backend.onrender.com/downloads/agent-mac.zip";
 
-    if (platform.includes("win")) {
-      file =
-        "https://peledomotionportal-backend.onrender.com/downloads/portal-agent-installer.exe";
-    }
+      if (platform.includes("win")) {
+        file =
+          "https://peledomotionportal-backend.onrender.com/downloads/portal-agent-installer.zip";
+      }
+      
 
     const link = document.createElement("a");
     link.href = file;
