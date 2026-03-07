@@ -5,7 +5,8 @@
 [Setup]
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
-DefaultDirName={pf}\PortalAgent
+PrivilegesRequired=lowest
+DefaultDirName={localappdata}\PortalAgent
 DefaultGroupName={#MyAppName}
 OutputDir=output
 OutputBaseFilename=portal-agent-installer
@@ -13,7 +14,11 @@ Compression=lzma
 SolidCompression=yes
 
 [Files]
-Source: "..\dist\agent.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\dist\agent\agent.exe"; DestDir: "{app}"; Flags: ignoreversion
+
+[Icons]
+Name: "{group}\Portal Agent"; Filename: "{app}\agent.exe"
+Name: "{group}\Desinstalar Portal Agent"; Filename: "{uninstallexe}"
 
 [Registry]
 Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; \
