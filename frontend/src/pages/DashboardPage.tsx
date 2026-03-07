@@ -4,16 +4,12 @@ import CategoryRow from "../components/CategoryRow/CategoryRow";
 import styles from "./DashboardPage.module.css";
 import { FiSearch } from "react-icons/fi";
 
-import { checkAgentRunning } from "../utils/checkAgent";
-import AgentRequiredOverlay from "../components/AgentRequiredOverlay";
-
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../services/firebase";
 
 export default function DashboardPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [activeFilter, setActiveFilter] = useState("todas");
-  const [agentMissing, setAgentMissing] = useState(false);
 
   const [tools, setTools] = useState<any[]>([]);
   const [profileCounts, setProfileCounts] = useState<Record<string, number>>({});
@@ -82,14 +78,7 @@ export default function DashboardPage() {
     fetchTools();
   }, []);
 
-  useEffect(() => {
-    async function check() {
-      const running = await checkAgentRunning();
-      setAgentMissing(!running);
-    }
-
-    check();
-  }, []);
+ 
 
   useEffect(() => {
     async function loadProfileCounts() {
@@ -189,19 +178,6 @@ export default function DashboardPage() {
         )}
       </main>
 
-      {agentMissing && (
-        <AgentRequiredOverlay
-          onDownload={() => setAgentMissing(false)}
-          onRetry={async () => {
-            const running = await checkAgentRunning();
-            if (!running) {
-              alert("O agente ainda não foi instalado.");
-              return;
-            }
-            setAgentMissing(false);
-          }}
-        />
-      )}
     </div>
   );
 }

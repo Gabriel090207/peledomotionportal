@@ -1,61 +1,55 @@
 import styles from "./ProfileRow.module.css";
 import { useState } from "react";
+import { invoke } from "@tauri-apps/api/core";
 
 type Props = {
-  profileId: number;
+  profileId: number; // número do perfil (ex: 27)
   name: string;
   group: string;
   status: "active" | "inactive";
 };
 
-export default function ProfileRow({
-  profileId,
-  name,
-  group,
-  status,
-}: Props) {
+export default function ProfileRow({ profileId, name, group, status }: Props) {
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [inUse, setInUse] = useState(false);
 
   async function handleOpenProfile() {
-    console.log("PROFILE ID:", profileId);
+    console.log("PROFILE NO:", profileId);
 
     try {
       setLoading(true);
       setErrorMsg(null);
 
-      const response = await fetch(
-        "http://127.0.0.1:3001/open-profile",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            profile_id: profileId,
-          }),
-        }
-      );
+      const data: any = await invoke("open_profile", {
+        profileNo: String(profileId),
+      });
 
-      if (!response.ok) {
-        throw new Error("Erro ao abrir perfil");
-      }
+      console.log("Resposta AdsPower:", data);
 
-      const data = await response.json();
-      console.log("Resposta agente:", data);
+      const parsed = typeof data === "string" ? JSON.parse(data) : data;
 
-      if (data?.error?.code === 111003) {
-        setErrorMsg("Perfil em uso, tente novamente mais tarde.");
-        setInUse(true);
+      if (parsed?.code !== 0) {
+        const msg = parsed?.msg || "Erro ao abrir o perfil";
+
+        const isInUse =
+          typeof msg === "string" &&
+          (msg.toLowerCase().includes("in use") ||
+            msg.toLowerCase().includes("used") ||
+            msg.toLowerCase().includes("opened") ||
+            msg.toLowerCase().includes("running"));
+
+        setErrorMsg(msg);
+        setInUse(isInUse);
         return;
       }
 
       console.log("Perfil aberto com sucesso");
       setInUse(false);
+      setErrorMsg(null);
     } catch (err) {
       console.error(err);
-      alert("Erro ao abrir o perfil");
+      setErrorMsg("Erro ao abrir o perfil");
     } finally {
       setLoading(false);
     }
@@ -67,11 +61,7 @@ export default function ProfileRow({
         <span>{name}</span>
         <span>{group}</span>
 
-        <span
-          className={
-            status === "active" ? styles.active : styles.inactive
-          }
-        >
+        <span className={status === "active" ? styles.active : styles.inactive}>
           {status === "active" ? "Ativo" : "Inativo"}
         </span>
 
@@ -84,9 +74,7 @@ export default function ProfileRow({
         </button>
 
         {errorMsg && (
-          <span style={{ color: "red", fontSize: "12px" }}>
-            {errorMsg}
-          </span>
+          <span style={{ color: "red", fontSize: "12px" }}>{errorMsg}</span>
         )}
       </div>
     </div>
