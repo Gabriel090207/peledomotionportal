@@ -3,12 +3,11 @@
 }
 
 .content{
-  padding:32px 48px;
+  padding:40px 60px;
 }
 
-/* =========================
-   BOTÃO VOLTAR
-   ========================= */
+
+/* BOTÃO VOLTAR */
 
 .back{
   display:inline-flex;
@@ -23,58 +22,48 @@
 
   color:#8a00ff;
   font-weight:600;
-  font-size:14px;
 
   cursor:pointer;
 
-  margin-bottom:28px;
+  margin-bottom:30px;
 
-  transition:all .25s ease;
+  transition:.25s;
 }
 
 .back:hover{
+
   background:rgba(180,0,255,.15);
 
   box-shadow:0 0 18px rgba(180,0,255,.45);
 
-  transform:translateX(-2px);
 }
 
 
-/* =========================
-   VIDEO CARD
-   ========================= */
-
-
+/* VIDEO */
 
 .videoTitle{
 
   text-align:center;
 
-  font-size:32px;
+  font-size:34px;
 
-  margin-bottom:18px;
-
-  color:var(--text);
+  margin-bottom:30px;
 
 }
 
 .videoWrapper{
 
- 
- margin-top: 50px;
-
-  border-radius:18px;
+  border-radius:20px;
 
   overflow:hidden;
 
   border:1px solid rgba(138,0,255,.6);
 
-  box-shadow:
-    0 0 30px rgba(138,0,255,.35);
+  box-shadow:0 0 35px rgba(138,0,255,.35);
 
   background:#000;
-  margin-bottom: 60px;
+
+  margin-bottom:70px;
 
 }
 
@@ -86,25 +75,27 @@
 
   object-fit:cover;
 
-  border:none;
-
-  display:block;
-
 }
 
-/* =========================
-   CARDS
-   ========================= */
+
+
+/* CARDS */
 
 .cards{
+
   display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:24px;
+
+  grid-template-columns:repeat(auto-fit,minmax(380px,1fr));
+
+  gap: 22px;
+
+  align-items:stretch;
+
 }
 
 .card{
 
-  padding:26px;
+  padding:28px;
 
   border-radius:22px;
 
@@ -114,13 +105,28 @@
     rgba(10,2,25,.95)
   );
 
-  border:1px solid rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.05);
+
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+
+  min-height:160px;
+
+  transition:.25s;
+
+}
+
+.card:hover{
+
+  transform:translateY(-3px);
+
+  box-shadow:0 0 35px rgba(138,0,255,.15);
 
 }
 
 .card h3{
   font-size:20px;
-  margin-bottom:4px;
 }
 
 .subtitle{
@@ -130,30 +136,28 @@
 }
 
 
-/* =========================
-   CREDENCIAIS
-   ========================= */
+
+/* CREDENCIAIS */
 
 .credentials{
 
-
   background:rgba(255,255,255,.04);
 
-  padding:16px 18px;
+  padding:26px;
 
   border-radius:14px;
 
   margin-bottom:20px;
-    
+
 }
 
 .credentials div{
 
   display:flex;
 
-  gap:6px;
+  gap: 6px;
 
-  margin-bottom:8px;
+  margin-bottom: 18px;
 
 }
 
@@ -163,54 +167,54 @@
 }
 
 .credentials strong{
-  font-size:14px;
-  color:white;
+  font-size:15px;
 }
 
 
 
-/* =========================
-   BOTÃO DOWNLOAD
-   ========================= */
+/* BOTÃO DOWNLOAD */
 
 .download{
 
   width:100%;
+
   padding:14px;
 
   border:none;
+
   border-radius:999px;
 
   font-weight:600;
-  font-size:15px;
 
   cursor:pointer;
 
-  background: linear-gradient(135deg, #8a00ff, #b400ff);
+  background: linear-gradient(135deg,#8a00ff,#b400ff);
 
   color:white;
 
   margin-bottom:16px;
 
-  transition:all .25s ease;
+  transition:.25s;
+
+}
+
+.download:hover{
+
+  transform:translateY(-2px);
+
+  box-shadow:0 24px 60px rgba(138,0,255,.6);
+
 }
 
 
 
-.download:hover { 
-     transform: translateY(-1px);
-  box-shadow:
-    0 24px 60px rgba(138,0,255,.6);
-}
-/* =========================
-   GERAR CÓDIGO
-   ========================= */
+/* GERAR CODIGO */
 
 .codeBox{
 
-  min-height:110px;
+  min-height:120px;
 
-  padding:18px;
+  padding:20px;
 
   border-radius:14px;
 
@@ -222,8 +226,6 @@
 
   margin-bottom:20px;
 
-  font-size:14px;
-
   text-align:center;
 
   display:flex;
@@ -234,9 +236,32 @@
 
   flex-direction:column;
 
-  line-height:1.7;
+  line-height:1.6;
 
 }
+
+
+.codigo{
+
+  font-size:42px;
+
+  font-weight:700;
+
+  letter-spacing:6px;
+
+}
+
+
+.timer{
+
+  margin-top:6px;
+
+  font-size:12px;
+
+  color:rgba(255,255,255,.6);
+
+}
+
 
 .generate{
 
@@ -258,7 +283,8 @@
 
   margin-bottom:14px;
 
-  transition:all .25s ease;
+  transition:.25s;
+
 }
 
 .generate:hover{
@@ -266,26 +292,34 @@
   background:rgba(180,0,255,.15);
 
   box-shadow:0 0 18px rgba(180,0,255,.45);
+
+}
+
+.generate:disabled{
+
+  opacity:.5;
+
+  cursor:not-allowed;
+
 }
 
 
-/* =========================
-   INFO
-   ========================= */
+
+/* INFO */
 
 .info{
 
-  font-size:10px;
+  font-size:12px;
 
   color:rgba(255,255,255,.6);
 
   text-align:center;
+
 }
 
 
-/* =========================
-   RESPONSIVO
-   ========================= */
+
+/* RESPONSIVO */
 
 @media(max-width:900px){
 
@@ -293,24 +327,20 @@
     grid-template-columns:1fr;
   }
 
-  .videoWrapper iframe{
-    height:300px;
-  }
-
 }
 
 @media(max-width:768px){
 
   .content{
-    padding:24px 18px;
+    padding:24px;
   }
 
 }
 
 @media(max-width:480px){
 
-  .videoWrapper iframe{
-    height:220px;
+  .video{
+    height:260px;
   }
 
 }
