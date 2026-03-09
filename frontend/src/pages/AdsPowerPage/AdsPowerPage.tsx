@@ -25,7 +25,7 @@ export default function AdsPowerPage() {
           "Content-Type":"application/json"
         },
         body:JSON.stringify({
-          email:"peledomotion@gmail.com"
+          email:"comboprata@peledomotion.com"
         })
       });
 
@@ -114,20 +114,18 @@ export default function AdsPowerPage() {
 
             <h3>Dados de acesso</h3>
 
-            <p className={styles.subtitle}>
-              Credenciais rotativas
-            </p>
+          
 
             <div className={styles.credentials}>
 
               <div>
                 <span>Email:</span>
-                <strong>peledomotion@gmail.com</strong>
+                <strong>comboprata@peledomotion.com</strong>
               </div>
 
               <div>
                 <span>Senha:</span>
-                <strong>@Pele3272</strong>
+                <strong>#Comboprata3272</strong>
               </div>
 
             </div>

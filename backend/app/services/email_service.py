@@ -60,8 +60,8 @@ def enviar_email_credenciais(destinatario: str, senha: str):
                 <!-- CARD ADSPOWER -->
                 <div style="background:#0f0a1f;border-radius:14px;padding:20px;border:1px solid rgba(255,255,255,.08);margin-bottom:30px;">
                   <strong>🌐 AdsPower</strong><br><br>
-                  Email: peledomotion@gmail.com<br><br>
-                  Senha: <strong>@Pele3272</strong><br><br>
+                  Email: comboprata@peledomotion.com<br><br>
+                  Senha: <strong>#Comboprata3272</strong><br><br>
 
              
                 </div>

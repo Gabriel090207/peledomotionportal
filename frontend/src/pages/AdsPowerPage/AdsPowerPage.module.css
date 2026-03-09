@@ -41,7 +41,8 @@
 .videoTitle{
   text-align:center;
   font-size:32px;
-  margin-bottom:28px;
+  margin-bottom:38px;
+  margin-top: -10px;
 }
 
 .videoWrapper{
@@ -120,7 +121,7 @@
 .card h3{
   font-size:20px;
   text-align:center;
-  margin-bottom:6px;
+  margin-bottom: 6px;
 }
 
 
@@ -140,8 +141,8 @@
 .credentials{
 
   background:rgba(255,255,255,.04);
-
-  padding:16px 18px;
+ 
+  padding:26px 28px;
 
   border-radius:12px;
 
@@ -150,6 +151,7 @@
   display:flex;
   flex-direction:column;
   gap:6px;
+  margin-top: 20px;
 }
 
 .credentials div{
@@ -167,7 +169,7 @@
 
 .credentials span{
   color:rgba(255,255,255,.6);
-  font-size:14px;
+  font-size:18px;
 }
 
 .credentials strong{
@@ -314,7 +316,7 @@
 
 .info{
 
-  font-size:12px;
+  font-size:11px;
 
   color:rgba(255,255,255,.6);
 

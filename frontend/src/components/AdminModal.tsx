@@ -57,7 +57,7 @@ export default function AdminModal({ isOpen, onClose }: AdminModalProps) {
  const [openConfirm, setOpenConfirm] = useState<string | null>(null);
 
   const [usuarios, setUsuarios] = useState<Usuario[]>([]);
-
+const [searchUsers, setSearchUsers] = useState("");
   const [openMenuUserId, setOpenMenuUserId] = useState<string | null>(null);
 const [openEditUser, setOpenEditUser] = useState<Usuario | null>(null);
 const [newEmail, setNewEmail] = useState("");
@@ -109,6 +109,14 @@ const perfisFiltrados = perfis.filter((perfil) => {
   if (!termo) return true;
 
   return perfil.name.toLowerCase().includes(termo);
+});
+
+const usuariosFiltrados = usuarios.filter((user) => {
+  const termo = searchUsers.toLowerCase().trim();
+
+  if (!termo) return true;
+
+  return user.email.toLowerCase().includes(termo);
 });
 
 
@@ -492,6 +500,18 @@ useEffect(() => {
     <>
       <h2>Usuários</h2>
 
+      <div className={styles.searchBar}>
+  <FiSearch size={18} className={styles.searchIcon} />
+
+  <input
+    className={styles.searchInput}
+    type="text"
+    placeholder="Pesquisar email..."
+    value={searchUsers}
+    onChange={(e) => setSearchUsers(e.target.value)}
+  />
+</div>
+
       <div className={styles.table}>
         <div className={`${styles.row} ${styles.headerRow}`}>
           <span>Email</span>
@@ -500,7 +520,7 @@ useEffect(() => {
           <span></span>
         </div>
 
-        {usuarios.map((user) => (
+      {usuariosFiltrados.map((user) => (
           <div key={user.id} className={styles.row}>
             <span>{user.email}</span>
 
