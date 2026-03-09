@@ -11,6 +11,7 @@ export default function AdsPowerPage() {
 
   const [codigo, setCodigo] = useState("");
   const [loading, setLoading] = useState(false);
+  const [tempo, setTempo] = useState(0);
 
   const gerarCodigo = async () => {
 
@@ -33,10 +34,25 @@ export default function AdsPowerPage() {
       if(data.ok){
 
         setCodigo(data.code);
+        setTempo(30);
 
-        setTimeout(()=>{
-          setCodigo("");
-        },30000);
+        const intervalo = setInterval(()=>{
+
+          setTempo((prev)=>{
+
+            if(prev <= 1){
+
+              clearInterval(intervalo);
+              setCodigo("");
+              return 0;
+
+            }
+
+            return prev - 1;
+
+          });
+
+        },1000);
 
       }else{
 
@@ -56,6 +72,7 @@ export default function AdsPowerPage() {
 
   return (
     <div className={styles.page}>
+
       <Header />
 
       <main className={styles.content}>
@@ -75,12 +92,14 @@ export default function AdsPowerPage() {
         </h2>
 
         <div className={styles.videoWrapper}>
+
           <video
             controls
             className={styles.video}
           >
             <source src="/video.mp4" type="video/mp4"/>
           </video>
+
         </div>
 
 
@@ -142,14 +161,22 @@ export default function AdsPowerPage() {
 
               {codigo ? (
 
-                <h2>{codigo}</h2>
+                <>
+                  <div className={styles.codigo}>
+                    {codigo}
+                  </div>
+
+                  <span className={styles.timer}>
+                    expira em {tempo}s
+                  </span>
+                </>
 
               ) : (
 
                 <>
                   Certifique-se de que você está na opção
                   <strong> AUTHENTICATOR</strong>
-                 
+                  <br/>
                   O código dura apenas 30 segundos.
                 </>
 
@@ -161,9 +188,10 @@ export default function AdsPowerPage() {
             <button
               className={styles.generate}
               onClick={gerarCodigo}
+              disabled={loading || tempo > 0}
             >
 
-              {loading ? "Gerando..." : "Gerar código"}
+              {loading ? "Gerando..." : tempo > 0 ? "Aguarde..." : "Gerar código"}
 
             </button>
 
@@ -178,6 +206,7 @@ export default function AdsPowerPage() {
         </div>
 
       </main>
+
     </div>
   );
 }
