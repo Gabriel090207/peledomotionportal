@@ -4,7 +4,7 @@ from fastapi import APIRouter
 router = APIRouter()
 
 # mesma secret usada no Authenticator
-SECRET_ADSPOWER = "TBR5NVNRSUHSJ2UUR2ADAEPWBIWBTTPD"
+SECRET_ADSPOWER = "J25DAIA4OEJD7I6WQ7LTGDW7S2C35W56"
 
 
 @router.post("/gerar-codigo")
