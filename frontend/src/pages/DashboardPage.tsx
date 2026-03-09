@@ -122,6 +122,12 @@ export default function DashboardPage() {
           </p>
         </section>
 
+       
+
+
+
+
+
         <section className={styles.filters}>
           <div className={styles.filterGroup}>
             {["todas", "ia", "imagem", "video", "audio", "edicao", "curso"].map(
@@ -148,6 +154,9 @@ export default function DashboardPage() {
             />
           </div>
         </section>
+
+        
+
 
         {activeFilter !== "todas" || searchTerm ? (
           <CategoryRow tools={filteredTools} hideHeader />

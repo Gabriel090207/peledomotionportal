@@ -10,9 +10,6 @@ def enviar_email_credenciais(destinatario: str, senha: str):
     if not api_key:
         raise RuntimeError("RESEND_API_KEY não configurada")
 
-    # Senha iXBrowser = email antes do @
-    senha_ixbrowser = destinatario.split("@")[0]
-
     html = f"""
 <!DOCTYPE html>
 <html>
@@ -60,26 +57,16 @@ def enviar_email_credenciais(destinatario: str, senha: str):
                   Senha temporária: <strong>{senha}</strong>
                 </div>
 
-                <!-- CARD IXBROWSER -->
+                <!-- CARD ADSPOWER -->
                 <div style="background:#0f0a1f;border-radius:14px;padding:20px;border:1px solid rgba(255,255,255,.08);margin-bottom:30px;">
-                  <strong>🌐 iXBrowser</strong><br><br>
-                  Email: {destinatario}<br><br>
-                  Senha: <strong>{senha_ixbrowser}</strong><br><br>
+                  <strong>🌐 AdsPower</strong><br><br>
+                  Email: peledomotion@gmail.com<br><br>
+                  Senha: <strong>@Pele3272</strong><br><br>
 
-                  <div style="
-                      background:rgba(255,193,7,.12);
-                      border:1px solid rgba(255,193,7,.35);
-                      color:#ffd66b;
-                      padding:12px;
-                      border-radius:10px;
-                      font-size:13px;
-                      line-height:1.5;
-                  ">
-                    ⚠️ O acesso ao iXBrowser pode levar até <strong>24 horas</strong> para ser liberado após a confirmação da compra.
-                  </div>
+             
                 </div>
 
-                <!-- BOTÕES 2x2 -->
+                <!-- BOTÕES 3x2 -->
                 <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:30px;">
                   <tr>
                     <td align="center">
@@ -87,36 +74,51 @@ def enviar_email_credenciais(destinatario: str, senha: str):
                       <!-- LINHA 1 -->
                       <table cellpadding="0" cellspacing="0">
                         <tr>
+
+                          <td style="padding:8px;">
+                            <a href="https://adspower.net"
+                              style="display:inline-block;background:#0066ff;color:#ffffff;text-decoration:none;padding:14px 20px;border-radius:999px;font-weight:700;width:170px;text-align:center;">
+                              🌐 AdsPower
+                            </a>
+                          </td>
+
                           <td style="padding:8px;">
                             <a href="https://wa.me/558491597264"
-                              style="display:inline-block;background:#25D366;color:#ffffff;text-decoration:none;padding:14px 26px;border-radius:999px;font-weight:700;width:220px;text-align:center;">
+                              style="display:inline-block;background:#25D366;color:#ffffff;text-decoration:none;padding:14px 20px;border-radius:999px;font-weight:700;width:170px;text-align:center;">
                               📞 Suporte
                             </a>
                           </td>
+
                           <td style="padding:8px;">
-                            <a href="https://ixbrowser.com/pt/download-page"
-                              style="display:inline-block;background:#0066ff;color:#ffffff;text-decoration:none;padding:14px 26px;border-radius:999px;font-weight:700;width:220px;text-align:center;">
-                              🌐 iXBrowser
+                            <a href="https://drive.google.com/file/d/1EPTVPiizKw7gwaTNEFJAPgKjMCOLOGY_/view?usp=sharing"
+                              style="display:inline-block;background:#ff005c;color:#ffffff;text-decoration:none;padding:14px 20px;border-radius:999px;font-weight:700;width:170px;text-align:center;">
+                              🎥 Tutorial
                             </a>
                           </td>
+
                         </tr>
                       </table>
 
                       <!-- LINHA 2 -->
                       <table cellpadding="0" cellspacing="0">
                         <tr>
+
                           <td style="padding:8px;">
-                            <a href="https://drive.google.com/file/d/1EPTVPiizKw7gwaTNEFJAPgKjMCOLOGY_/view?usp=sharing"
-                              style="display:inline-block;background:#ff005c;color:#ffffff;text-decoration:none;padding:14px 26px;border-radius:999px;font-weight:700;width:220px;text-align:center;">
-                              🎥 Tutorial
+                            <a href="https://adspower.net/download"
+                              style="display:inline-block;background:#ff7a00;color:#ffffff;text-decoration:none;padding:14px 20px;border-radius:999px;font-weight:700;width:170px;text-align:center;">
+                              🍎 Baixar (Mac)
                             </a>
                           </td>
+
                           <td style="padding:8px;">
-                            <a href="https://portal.peledomotion.com"
-                              style="display:inline-block;background:#8a00ff;color:#ffffff;text-decoration:none;padding:14px 26px;border-radius:999px;font-weight:700;width:220px;text-align:center;">
-                              🚀 Acessar Portal
+                            <a href="https://adspower.net/download"
+                              style="display:inline-block;background:#00b3ff;color:#ffffff;text-decoration:none;padding:14px 20px;border-radius:999px;font-weight:700;width:170px;text-align:center;">
+                              🖥 Baixar (Windows)
                             </a>
                           </td>
+
+                         
+
                         </tr>
                       </table>
 

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { FiLock } from "react-icons/fi";
 
 import Header from "../../components/Header";
 import ProfileRow from "../../components/ProfileRow/ProfileRow";
@@ -116,12 +117,22 @@ export default function ToolPage() {
       <Header />
 
       <main className={styles.content}>
-        <button
-          className={styles.back}
-          onClick={() => navigate("/dashboard")}
-        >
-          ← Voltar para ferramentas
-        </button>
+        <div className={styles.actionsRow}>
+  <button
+    className={styles.back}
+    onClick={() => navigate("/dashboard")}
+  >
+    ← Voltar para ferramentas
+  </button>
+
+  <button
+    className={styles.authButton}
+    onClick={() => navigate("/adspower")}
+  >
+    <FiLock className={styles.lockIcon} />
+    Autenticar AdsPower
+  </button>
+</div>
 
         <div className={styles.toolCard}>
           <img src={tool.logo} alt={tool.name} />

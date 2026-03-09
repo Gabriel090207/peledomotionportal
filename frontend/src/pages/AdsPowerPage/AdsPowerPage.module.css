@@ -1,0 +1,316 @@
+.page{
+  min-height:100vh;
+}
+
+.content{
+  padding:32px 48px;
+}
+
+/* =========================
+   BOTÃO VOLTAR
+   ========================= */
+
+.back{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+
+  padding:10px 18px;
+
+  background:rgba(255,255,255,.05);
+  border:1px solid #8a00ff;
+  border-radius:999px;
+
+  color:#8a00ff;
+  font-weight:600;
+  font-size:14px;
+
+  cursor:pointer;
+
+  margin-bottom:28px;
+
+  transition:all .25s ease;
+}
+
+.back:hover{
+  background:rgba(180,0,255,.15);
+
+  box-shadow:0 0 18px rgba(180,0,255,.45);
+
+  transform:translateX(-2px);
+}
+
+
+/* =========================
+   VIDEO CARD
+   ========================= */
+
+
+
+.videoTitle{
+
+  text-align:center;
+
+  font-size:32px;
+
+  margin-bottom:18px;
+
+  color:var(--text);
+
+}
+
+.videoWrapper{
+
+ 
+ margin-top: 50px;
+
+  border-radius:18px;
+
+  overflow:hidden;
+
+  border:1px solid rgba(138,0,255,.6);
+
+  box-shadow:
+    0 0 30px rgba(138,0,255,.35);
+
+  background:#000;
+  margin-bottom: 60px;
+
+}
+
+.video{
+
+  width:100%;
+
+  height:620px;
+
+  object-fit:cover;
+
+  border:none;
+
+  display:block;
+
+}
+
+/* =========================
+   CARDS
+   ========================= */
+
+.cards{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:24px;
+}
+
+.card{
+
+  padding:26px;
+
+  border-radius:22px;
+
+  background:linear-gradient(
+    135deg,
+    rgba(20,5,45,.9),
+    rgba(10,2,25,.95)
+  );
+
+  border:1px solid rgba(255,255,255,.06);
+
+}
+
+.card h3{
+  font-size:20px;
+  margin-bottom:4px;
+}
+
+.subtitle{
+  color:rgba(255,255,255,.6);
+  font-size:14px;
+  margin-bottom:22px;
+}
+
+
+/* =========================
+   CREDENCIAIS
+   ========================= */
+
+.credentials{
+
+
+  background:rgba(255,255,255,.04);
+
+  padding:16px 18px;
+
+  border-radius:14px;
+
+  margin-bottom:20px;
+    min-height:110px;
+}
+
+.credentials div{
+
+  display:flex;
+
+  gap:6px;
+
+  margin-bottom:8px;
+
+}
+
+.credentials span{
+  color:rgba(255,255,255,.6);
+  font-size:15px;
+}
+
+.credentials strong{
+  font-size:14px;
+  color:white;
+}
+
+
+
+/* =========================
+   BOTÃO DOWNLOAD
+   ========================= */
+
+.download{
+
+  width:100%;
+  padding:14px;
+
+  border:none;
+  border-radius:999px;
+
+  font-weight:600;
+  font-size:15px;
+
+  cursor:pointer;
+
+  background: linear-gradient(135deg, #8a00ff, #b400ff);
+
+  color:white;
+
+  margin-bottom:16px;
+
+  transition:all .25s ease;
+}
+
+
+
+.download:hover { 
+     transform: translateY(-1px);
+  box-shadow:
+    0 24px 60px rgba(138,0,255,.6);
+}
+/* =========================
+   GERAR CÓDIGO
+   ========================= */
+
+.codeBox{
+
+  min-height:110px;
+
+  padding:18px;
+
+  border-radius:14px;
+
+  border:1px solid #8a00ff;
+
+  background:transparent;
+
+  color:#8a00ff;
+
+  margin-bottom:20px;
+
+  font-size:14px;
+
+  text-align:center;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  flex-direction:column;
+
+  line-height:1.7;
+
+}
+
+.generate{
+
+  width:100%;
+
+  padding:14px;
+
+  border-radius:999px;
+
+  border:1px solid #8a00ff;
+
+  background:transparent;
+
+  color:#8a00ff;
+
+  font-weight:600;
+
+  cursor:pointer;
+
+  margin-bottom:14px;
+
+  transition:all .25s ease;
+}
+
+.generate:hover{
+
+  background:rgba(180,0,255,.15);
+
+  box-shadow:0 0 18px rgba(180,0,255,.45);
+}
+
+
+/* =========================
+   INFO
+   ========================= */
+
+.info{
+
+  font-size:10px;
+
+  color:rgba(255,255,255,.6);
+
+  text-align:center;
+}
+
+
+/* =========================
+   RESPONSIVO
+   ========================= */
+
+@media(max-width:900px){
+
+  .cards{
+    grid-template-columns:1fr;
+  }
+
+  .videoWrapper iframe{
+    height:300px;
+  }
+
+}
+
+@media(max-width:768px){
+
+  .content{
+    padding:24px 18px;
+  }
+
+}
+
+@media(max-width:480px){
+
+  .videoWrapper iframe{
+    height:220px;
+  }
+
+}
