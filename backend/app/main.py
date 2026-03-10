@@ -48,18 +48,18 @@ def root():
 # ------------------------------
 # DOWNLOAD DE ARQUIVOS
 # ------------------------------
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 @app.get("/downloads/{file_name}")
 def download_file(file_name: str):
 
-    file_path = os.path.join(BASE_DIR, "downloads", file_name)
+    file_path = os.path.join(BASE_DIR, "app", "downloads", file_name)
 
     if not os.path.exists(file_path):
         raise HTTPException(status_code=404, detail="Arquivo não encontrado")
 
     return FileResponse(
-        path=file_path,
+        file_path,
         filename=file_name,
         media_type="application/octet-stream"
     )
