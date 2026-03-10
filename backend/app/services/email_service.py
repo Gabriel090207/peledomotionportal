@@ -104,7 +104,7 @@ def enviar_email_credenciais(destinatario: str, senha: str):
                         <tr>
 
                           <td style="padding:8px;">
-                           <a href="https://peledomotionportal-backend.onrender.com/downloads/pele-do-motion-mac.zip">
+                           <a href="https://peledomotionportal-backend.onrender.com/downloads/pele-do-motion-mac.dmg">
 🍎 Baixar Pele do Motion (Mac)
 </a>       </td>
 
