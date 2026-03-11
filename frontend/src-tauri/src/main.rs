@@ -10,7 +10,7 @@ async fn open_profile(profile_no: String) -> Result<String, String> {
         .post("http://local.adspower.net:50325/api/v2/browser-profile/start")
         .header(
             "Authorization",
-            "Bearer 29bc53f626a03c5702cc13b92f5940560083e482b6f6c9d6",
+            "Bearer cdc9e17251d5c383f8c56a00967dbe6a0083e482b6f6c9d6",
         )
         .json(&serde_json::json!({
             "profile_no": profile_no
