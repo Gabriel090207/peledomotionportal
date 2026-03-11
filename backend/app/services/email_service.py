@@ -103,16 +103,19 @@ def enviar_email_credenciais(destinatario: str, senha: str):
                       <table cellpadding="0" cellspacing="0">
                         <tr>
 
-                          <td style="padding:8px;">
-                           <a href="https://peledomotionportal-backend.onrender.com/downloads/pele-do-motion-mac.dmg">
-🍎 Baixar Pele do Motion (Mac)
-</a>       </td>
+                         <td style="padding:8px;">
+  <a href="https://peledomotionportal-backend.onrender.com/downloads/pele-do-motion-mac.dmg"
+     style="display:inline-block;background:#ff7a00;color:#ffffff;text-decoration:none;padding:14px 20px;border-radius:999px;font-weight:700;width:170px;text-align:center;">
+    🍎 Baixar Pele do Motion (Mac)
+  </a>
+</td>
 
                           <td style="padding:8px;">
-                           <a href="https://peledomotionportal-backend.onrender.com/downloads/pele-do-motion-windows.exe">
-🖥 Baixar Pele do Motion (Windows)
-</a>
-                          </td>
+  <a href="https://peledomotionportal-backend.onrender.com/downloads/pele-do-motion-windows.exe"
+     style="display:inline-block;background:#00b3ff;color:#ffffff;text-decoration:none;padding:14px 20px;border-radius:999px;font-weight:700;width:170px;text-align:center;">
+    🖥 Baixar Pele do Motion (Windows)
+  </a>
+</td>
 
                          
 
