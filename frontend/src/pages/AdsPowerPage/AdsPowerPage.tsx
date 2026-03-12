@@ -93,12 +93,9 @@ export default function AdsPowerPage() {
 
         <div className={styles.videoWrapper}>
 
-          <video
-            controls
-            className={styles.video}
-          >
-            <source src="/video (2).mp4" type="video/mp4"/>
-          </video>
+        <video controls className={styles.video}>
+  <source src="https://portal.peledomotion.com/videotutorial.mp4" type="video/mp4" />
+</video>
 
         </div>
 
