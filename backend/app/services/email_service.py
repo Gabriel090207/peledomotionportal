@@ -111,7 +111,7 @@ def enviar_email_credenciais(destinatario: str, senha: str):
 </td>
 
                           <td style="padding:8px;">
-  <a href="https://peledomotionportal-backend.onrender.com/downloads/pele-do-motion-windows.exe"
+  <a href="https://peledomotionportal-backend.onrender.com/downloads/Pele do Motion_0.1.0_x64-setup.exe"
      style="display:inline-block;background:#00b3ff;color:#ffffff;text-decoration:none;padding:14px 20px;border-radius:999px;font-weight:700;width:170px;text-align:center;">
     🖥 Baixar Pele do Motion (Windows)
   </a>
