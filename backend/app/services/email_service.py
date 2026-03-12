@@ -90,7 +90,7 @@ def enviar_email_credenciais(destinatario: str, senha: str):
                           </td>
 
                           <td style="padding:8px;">
-                            <a href="https://drive.google.com/file/d/1EPTVPiizKw7gwaTNEFJAPgKjMCOLOGY_/view?usp=sharing"
+                            <a href="https://drive.google.com/file/d/1I_jjx8-lxT1xuYyhVZ2pjw5QklB2mWqC/view?usp=sharing"
                               style="display:inline-block;background:#ff005c;color:#ffffff;text-decoration:none;padding:14px 20px;border-radius:999px;font-weight:700;width:170px;text-align:center;">
                               🎥 Tutorial
                             </a>

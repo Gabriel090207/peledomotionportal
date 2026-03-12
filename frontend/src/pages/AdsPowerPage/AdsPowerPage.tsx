@@ -97,7 +97,7 @@ export default function AdsPowerPage() {
             controls
             className={styles.video}
           >
-            <source src="/video.mp4" type="video/mp4"/>
+            <source src="/video (2).mp4" type="video/mp4"/>
           </video>
 
         </div>
@@ -130,17 +130,7 @@ export default function AdsPowerPage() {
 
             </div>
 
-           <button
-  className={styles.download}
-  onClick={() =>
-    window.open(
-      "https://activity.adspower.com/ap/dist/fast/?utm_source=google&utm_medium=cpc&utm_term=Pmax-90%E6%97%A5%E4%BB%A5%E5%86%85%E5%A5%97%E9%A4%90%E7%9A%84%E5%AE%A2%E6%88%B7-EN-20260226&utm_content=90%E6%97%A5%E5%86%85%E5%A5%97%E9%A4%90%E5%AE%A2%E6%88%B7&utm_campaign=&campaignid={23607652210}&adgroupid=&adid=&network=x&device=c&locid=9074244&utm_matchtype=&utm_targetid=&utm_source=google&utm_medium=cpc&utm_term=&utm_content=&utm_campaign=&campaignid=23607652210&adgroupid=&adid=&network=x&device=c&locid=9074244&utm_matchtype=&utm_targetid=&gad_source=1&gad_campaignid=23602976789&gbraid=0AAAAACQgKVME7E7hLp76DOsYPlv4bU9FX&gclid=Cj0KCQjw37nNBhDkARIsAEBGI8NU2ZOxRDgrSWYUZP8LQZi8Pgyj6TLhMwYH7yA7RM_2tK6RlQydWMgaAhymEALw_wcB",
-      "_blank"
-    )
-  }
->
-  Baixar AdsPower
-</button>
+          
 
             <p className={styles.info}>
               As credenciais são atualizadas periodicamente.
